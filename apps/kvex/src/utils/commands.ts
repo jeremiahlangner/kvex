@@ -47,7 +47,7 @@ export function getSuggestions(input: string): Suggestion[] {
     all.push(
       ...cmd.aliases
         .filter((a) => a.length > 1)
-        .map((a) => ({ name: a, description: `alias for ${cmd.name}` })),
+        .map((a) => ({ name: a, description: cmd.description })),
     );
   }
   if (!input) return all;
