@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+/tmp/kvex-edit-*.json

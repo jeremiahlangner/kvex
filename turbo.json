@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "dev": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true,
+      "command": ["bun", "--watch", "src/index.tsx"]
+    },
+    "build": {
+      "dependsOn": [],
+      "outputs": ["dist/**"],
+      "command": ["bun", "build", "src/index.tsx", "--outdir", "dist"]
+    },
+    "lint": {
+      "dependsOn": [],
+      "command": ["bun", "x", "tsc", "--noEmit"]
+    },
+    "clean": {
+      "cache": false,
+      "command": ["rm", "-rf", "dist", ".turbo"]
+    }
+  }
+}
