@@ -75,7 +75,8 @@ export function KeySelect() {
     <box
       flexGrow={1}
       flexDirection="column"
-      borderStyle="rounded"
+      borderStyle="heavy"
+      backgroundColor={colors.pane.background}
       borderColor={state.focusedPane === 1 ? colors.pane.border.focused : colors.pane.border.unfocused}
       title={`Primary Key (${hashKey})`}
       titleColor={state.focusedPane === 1 ? colors.pane.title.focused : colors.pane.title.unfocused}

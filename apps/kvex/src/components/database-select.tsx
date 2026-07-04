@@ -73,7 +73,8 @@ export function DatabaseSelect() {
     <box
       flexGrow={1}
       flexDirection="column"
-      borderStyle="rounded"
+      borderStyle="heavy"
+      backgroundColor={colors.pane.background}
       borderColor={state.focusedPane === 0 ? colors.pane.border.focused : colors.pane.border.unfocused}
       title={label}
       titleColor={state.focusedPane === 0 ? colors.pane.title.focused : colors.pane.title.unfocused}

@@ -1,7 +1,8 @@
 export const colors = {
   pane: {
+    background: "#1a1a3e",
     border: {
-      focused: "#8888FF",
+      focused: "#6666FF",
       unfocused: "#4444AA",
     },
     title: {
