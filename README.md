@@ -17,7 +17,7 @@ pnpm install
 pnpm kvex
 
 # or link globally so you can run "kvex" from anywhere
-cd apps/kvex && pnpm link --global
+cd apps/tui && pnpm link --global
 ```
 
 ## Usage

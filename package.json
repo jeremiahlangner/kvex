@@ -5,7 +5,7 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "kvex": "bun run apps/kvex/src/index.tsx"
+    "kvex": "bun run apps/tui/src/index.tsx"
   },
   "devDependencies": {
     "turbo": "^2.5.0",

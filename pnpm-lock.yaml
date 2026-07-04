@@ -15,7 +15,7 @@ importers:
         specifier: ^5.8.0
         version: 5.9.3
 
-  apps/kvex:
+  apps/tui:
     dependencies:
       '@opentui/core':
         specifier: ^0.4.3
