@@ -1,5 +1,6 @@
 import { useKeyboard } from "@opentui/react";
 import { useAppState } from "../state";
+import { colors } from "../theme";
 
 export function ConfirmDialog() {
   const { state, dispatch } = useAppState();
@@ -35,15 +36,15 @@ export function ConfirmDialog() {
         width="50%"
         height={5}
         borderStyle="double"
-        borderColor="#FF4444"
-        backgroundColor="#1a0000"
+        borderColor={colors.confirm.border}
+        backgroundColor={colors.confirm.background}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
         padding={1}
       >
-        <text fg="#FF4444">{state.confirmDialog.message}</text>
-        <text fg="#AAAAAA">[Y]es / [N]o</text>
+        <text fg={colors.confirm.message}>{state.confirmDialog.message}</text>
+        <text fg={colors.confirm.hint}>[Y]es / [N]o</text>
       </box>
     </box>
   );

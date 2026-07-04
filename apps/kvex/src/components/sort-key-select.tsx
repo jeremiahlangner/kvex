@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { cache } from "../cache";
+import { colors } from "../theme";
 
 export function SortKeySelect() {
   const { state, dispatch } = useAppState();
@@ -52,13 +53,13 @@ export function SortKeySelect() {
       flexGrow={1}
       flexDirection="column"
       borderStyle="rounded"
-      borderColor={state.focusedPane === 2 ? "#8888FF" : "#4444AA"}
+      borderColor={state.focusedPane === 2 ? colors.pane.border.focused : colors.pane.border.unfocused}
       title={`Sort Key (${range})`}
-      titleColor={state.focusedPane === 2 ? "#FFFFFF" : "#8888FF"}
+      titleColor={state.focusedPane === 2 ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
       {state.sortKeyLoading ? (
-        <text fg="#888888">Loading...</text>
+        <text fg={colors.pane.loading}>Loading...</text>
       ) : (
         <select
           options={options}

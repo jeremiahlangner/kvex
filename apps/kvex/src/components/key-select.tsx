@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { cache } from "../cache";
+import { colors } from "../theme";
 
 export function KeySelect() {
   const { state, dispatch } = useAppState();
@@ -75,13 +76,13 @@ export function KeySelect() {
       flexGrow={1}
       flexDirection="column"
       borderStyle="rounded"
-      borderColor={state.focusedPane === 1 ? "#8888FF" : "#4444AA"}
+      borderColor={state.focusedPane === 1 ? colors.pane.border.focused : colors.pane.border.unfocused}
       title={`Primary Key (${hashKey})`}
-      titleColor={state.focusedPane === 1 ? "#FFFFFF" : "#8888FF"}
+      titleColor={state.focusedPane === 1 ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
       {state.primaryKeyLoading ? (
-        <text fg="#888888">Loading...</text>
+        <text fg={colors.pane.loading}>Loading...</text>
       ) : (
         <select
           options={options}

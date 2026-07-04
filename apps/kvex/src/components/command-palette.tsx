@@ -2,6 +2,7 @@ import { useAppState } from "../state";
 import { getSuggestions, parseCommand } from "../utils/commands";
 import { useKeyboard } from "@opentui/react";
 import { useState, useMemo } from "react";
+import { colors } from "../theme";
 
 interface CommandPaletteProps {
   onQuit: () => void;
@@ -107,7 +108,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
   if (!state.commandOpen) {
     return (
       <box height={1} width="100%" flexDirection="row" alignItems="center" paddingLeft={1}>
-        <text fg="#555577">Press '/' for commands</text>
+        <text fg={colors.palette.hint}>Press '/' for commands</text>
       </box>
     );
   }
@@ -117,24 +118,24 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
       height={8}
       width="100%"
       flexDirection="column"
-      backgroundColor="#1a1a3e"
+      backgroundColor={colors.palette.background}
       borderStyle="heavy"
       border={["left"]}
-      borderColor="#6666FF"
+      borderColor={colors.palette.border}
     >
       <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-        <text fg="#6666FF">/</text>
-        <text fg={isKnownCommand ? "#6666FF" : "#CCCCCC"}>
+        <text fg={colors.palette.prompt}>/</text>
+        <text fg={isKnownCommand ? colors.palette.text.command : colors.palette.text.default}>
           {state.commandBuffer}
         </text>
       </box>
       <box height={5} flexDirection="column" paddingLeft={2}>
         {suggestions.slice(selectedIndex, selectedIndex + 3).map((s) => (
           <box key={s.name} flexDirection="row" width="100%">
-            <text fg="#FFFFFF">
+            <text fg={colors.palette.suggestion.selected}>
               {s.name}
             </text>
-            <text fg="#AAAAAA">
+            <text fg={colors.palette.description.selected}>
               {"  "}{s.description}
             </text>
           </box>

@@ -1,6 +1,7 @@
 import { useAppState } from "../state";
 import { getSyntaxStyle } from "../utils/syntax";
 import { onChunks, getHighlightClient } from "../utils/highlight";
+import { colors } from "../theme";
 
 export function PreviewPane() {
   const { state } = useAppState();
@@ -16,9 +17,9 @@ export function PreviewPane() {
       flexGrow={1}
       flexDirection="column"
       borderStyle="rounded"
-      borderColor={state.focusedPane === 3 ? "#8888FF" : "#4444AA"}
+      borderColor={state.focusedPane === 3 ? colors.pane.border.focused : colors.pane.border.unfocused}
       title="Preview"
-      titleColor={state.focusedPane === 3 ? "#FFFFFF" : "#8888FF"}
+      titleColor={state.focusedPane === 3 ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
       <code

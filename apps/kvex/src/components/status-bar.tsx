@@ -1,11 +1,12 @@
 import { useAppState } from "../state";
 import { getCollectionLabel } from "../providers/types";
+import { colors } from "../theme";
 
 export function StatusBar() {
   const { state } = useAppState();
   const connColor =
-    state.connectionStatus === "connected" ? "#00FF00" :
-    state.connectionStatus === "error" ? "#FF0000" : "#FFFF00";
+    state.connectionStatus === "connected" ? colors.status.connected :
+    state.connectionStatus === "error" ? colors.status.error : colors.status.warning;
 
   const label = getCollectionLabel(state.activeProviderType);
 
@@ -21,7 +22,7 @@ export function StatusBar() {
       <text fg={connColor}>
         {state.activeProviderType} / {label}  •  {state.connectionStatus}
       </text>
-      <text fg="#888888">
+      <text fg={colors.status.hint}>
         editor: {state.config.editor}  |  / cmd  |  Tab nav  |  q quit
       </text>
     </box>

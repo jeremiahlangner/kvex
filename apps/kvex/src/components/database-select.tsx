@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { MockProvider } from "../providers/mock-provider";
 import { type DatabaseProvider, getCollectionLabel } from "../providers/types";
+import { colors } from "../theme";
 
 export function DatabaseSelect() {
   const { state, dispatch } = useAppState();
@@ -73,13 +74,13 @@ export function DatabaseSelect() {
       flexGrow={1}
       flexDirection="column"
       borderStyle="rounded"
-      borderColor={state.focusedPane === 0 ? "#8888FF" : "#4444AA"}
+      borderColor={state.focusedPane === 0 ? colors.pane.border.focused : colors.pane.border.unfocused}
       title={label}
-      titleColor={state.focusedPane === 0 ? "#FFFFFF" : "#8888FF"}
+      titleColor={state.focusedPane === 0 ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
       {state.tablesLoading ? (
-        <text fg="#888888">Loading...</text>
+        <text fg={colors.pane.loading}>Loading...</text>
       ) : (
         <select
           options={tableOptions}
