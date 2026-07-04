@@ -18,11 +18,12 @@ export const colors = {
     },
     suggestion: {
       selected: "#FFFFFF",
-      unselected: "#8888FF",
+      unselected: "#555577",
+      bg: "#2a2a5e",
     },
     description: {
       selected: "#AAAAAA",
-      unselected: "#555577",
+      unselected: "#444466",
     },
     hint: "#555577",
   },

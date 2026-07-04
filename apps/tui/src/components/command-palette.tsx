@@ -130,12 +130,17 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
         </text>
       </box>
       <box height={5} flexDirection="column" paddingLeft={2}>
-        {suggestions.slice(selectedIndex, selectedIndex + 3).map((s) => (
-          <box key={s.name} flexDirection="row" width="100%">
-            <text fg={colors.palette.suggestion.selected}>
+        {suggestions.slice(selectedIndex, selectedIndex + 3).map((s, i) => (
+          <box
+            key={s.name}
+            flexDirection="row"
+            width="100%"
+            backgroundColor={i === 0 ? colors.palette.suggestion.bg : undefined}
+          >
+            <text fg={i === 0 ? colors.palette.suggestion.selected : colors.palette.suggestion.unselected}>
               {s.name}
             </text>
-            <text fg={colors.palette.description.selected}>
+            <text fg={i === 0 ? colors.palette.description.selected : colors.palette.description.unselected}>
               {"  "}{s.description}
             </text>
           </box>
