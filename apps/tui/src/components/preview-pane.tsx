@@ -16,9 +16,9 @@ export function PreviewPane() {
     <box
       flexGrow={1}
       flexDirection="column"
-      backgroundColor={state.focusedPane === 3 ? colors.pane.background : undefined}
+      backgroundColor={state.focusedPane === 3 && !state.commandOpen ? colors.pane.background : undefined}
       title="Preview"
-      titleColor={state.focusedPane === 3 ? colors.pane.title.focused : colors.pane.title.unfocused}
+      titleColor={state.focusedPane === 3 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
       <code

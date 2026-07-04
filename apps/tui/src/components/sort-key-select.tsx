@@ -52,9 +52,9 @@ export function SortKeySelect() {
     <box
       flexGrow={1}
       flexDirection="column"
-      backgroundColor={state.focusedPane === 2 ? colors.pane.background : undefined}
+      backgroundColor={state.focusedPane === 2 && !state.commandOpen ? colors.pane.background : undefined}
       title={`Sort Key (${range})`}
-      titleColor={state.focusedPane === 2 ? colors.pane.title.focused : colors.pane.title.unfocused}
+      titleColor={state.focusedPane === 2 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
       {state.sortKeyLoading ? (
@@ -64,7 +64,7 @@ export function SortKeySelect() {
           options={options}
           selectedIndex={selectedIdx >= 0 ? selectedIdx : 0}
           onChange={handleChange}
-          focused={state.focusedPane === 2}
+          focused={state.focusedPane === 2 && !state.commandOpen}
           height={10}
           itemSpacing={0}
           showDescription={false}
