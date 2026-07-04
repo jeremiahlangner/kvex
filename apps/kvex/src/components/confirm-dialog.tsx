@@ -35,11 +35,9 @@ export function ConfirmDialog() {
         top="40%"
         width="50%"
         height={5}
-        borderStyle="heavy"
-        borderColor={colors.confirm.border}
         backgroundColor={colors.confirm.background}
         title="Confirm"
-        titleColor={colors.confirm.border}
+        titleColor={colors.confirm.accent}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"

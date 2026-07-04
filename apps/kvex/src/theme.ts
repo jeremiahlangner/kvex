@@ -29,7 +29,7 @@ export const colors = {
 
   confirm: {
     background: "#1a1a3e",
-    border: "#6666FF",
+    accent: "#6666FF",
     message: "#FFFFFF",
     hint: "#AAAAAA",
   },
