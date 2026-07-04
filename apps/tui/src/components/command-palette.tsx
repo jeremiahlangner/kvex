@@ -16,12 +16,16 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
 
-  const cmdName = state.commandBuffer.split(/\s+/)[0];
+  const firstSpaceIdx = state.commandBuffer.indexOf(" ");
+  const cmdName = firstSpaceIdx >= 0 ? state.commandBuffer.slice(0, firstSpaceIdx) : state.commandBuffer;
+
   const isKnownCommand = useMemo(() => {
     if (!cmdName) return false;
-    const parsed = parseCommand(cmdName);
-    return parsed !== null;
+    return parseCommand(cmdName) !== null;
   }, [cmdName]);
+
+  const splitMode = isKnownCommand && firstSpaceIdx >= 0;
+  const inputPart = splitMode ? state.commandBuffer.slice(firstSpaceIdx + 1) : "";
 
   const executeCommand = () => {
     const parsed = parseCommand(state.commandBuffer);
@@ -55,6 +59,11 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
     setSelectedIndex(0);
   };
 
+  const appendBuffer = (char: string) => {
+    dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer + char });
+    setSelectedIndex(0);
+  };
+
   useKeyboard((key) => {
     if (!state.commandOpen) return false;
 
@@ -77,15 +86,18 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
     if (key.name === "tab") {
       if (suggestions.length > 0) {
         dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestions[selectedIndex].name });
+        setSelectedIndex(0);
       }
       return true;
     }
     if (key.name === "backspace") {
-      const cur = state.commandBuffer;
-      if (cur.length > 0) {
-        dispatch({ type: "SET_COMMAND_BUFFER", buffer: cur.slice(0, -1) });
-        setSelectedIndex(0);
-      }
+      dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer.slice(0, -1) });
+      setSelectedIndex(0);
+      return true;
+    }
+    if (key.ctrl && key.name === "u") {
+      dispatch({ type: "SET_COMMAND_BUFFER", buffer: "" });
+      setSelectedIndex(0);
       return true;
     }
     if (key.name === "return") {
@@ -93,13 +105,12 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
       return true;
     }
     if (key.name === "space") {
-      dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer + " " });
-      setSelectedIndex(0);
+      appendBuffer(" ");
       return true;
     }
-    if (key.name.length === 1) {
-      dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer + key.name });
-      setSelectedIndex(0);
+    if (key.name.length === 1 && !key.ctrl && !key.meta && !key.option) {
+      let char = key.shift ? key.name.toUpperCase() : key.name;
+      appendBuffer(char);
       return true;
     }
     return false;
@@ -125,9 +136,17 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
     >
       <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
         <text fg={colors.palette.prompt}>/</text>
-        <text fg={isKnownCommand ? colors.palette.text.command : colors.palette.text.default}>
-          {state.commandBuffer}
-        </text>
+        {splitMode ? (
+          <box flexDirection="row">
+            <text fg={colors.palette.text.command}>{cmdName}</text>
+            <text fg={colors.palette.text.command}> </text>
+            <text>{inputPart}</text>
+          </box>
+        ) : (
+          <text fg={isKnownCommand ? colors.palette.text.command : undefined}>
+            {state.commandBuffer}
+          </text>
+        )}
       </box>
       <box height={5} flexDirection="column" paddingLeft={2}>
         {suggestions.slice(selectedIndex, selectedIndex + 3).map((s, i) => (
