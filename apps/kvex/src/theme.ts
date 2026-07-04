@@ -28,9 +28,9 @@ export const colors = {
   },
 
   confirm: {
-    border: "#FF4444",
-    background: "#1a0000",
-    message: "#FF4444",
+    background: "#1a1a3e",
+    border: "#6666FF",
+    message: "#FFFFFF",
     hint: "#AAAAAA",
   },
 
