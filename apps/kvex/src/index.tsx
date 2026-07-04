@@ -18,7 +18,7 @@ async function main() {
 
   renderer.setTerminalTitle("kvex - NoSQL KV Explorer");
 
-  createRoot(renderer).render(<App />);
+  createRoot(renderer).render(<App initialConfig={config} />);
 }
 
 main().catch((err) => {

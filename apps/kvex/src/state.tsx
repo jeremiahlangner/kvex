@@ -152,8 +152,11 @@ interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(appReducer, initialState);
+export function AppProvider({ children, initialConfig }: { children: ReactNode; initialConfig?: KvexConfig }) {
+  const [state, dispatch] = useReducer(appReducer, {
+    ...initialState,
+    ...(initialConfig ? { config: initialConfig } : {}),
+  });
   return (
     <AppContext.Provider value={{ state, dispatch }}>
       {children}

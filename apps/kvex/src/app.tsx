@@ -167,9 +167,13 @@ function AppInner() {
   );
 }
 
-export function App() {
+interface AppProps {
+  initialConfig?: import("./providers/types").KvexConfig;
+}
+
+export function App({ initialConfig }: AppProps) {
   return (
-    <AppProvider>
+    <AppProvider initialConfig={initialConfig}>
       <AppInner />
     </AppProvider>
   );
