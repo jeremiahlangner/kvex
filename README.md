@@ -4,14 +4,20 @@ TUI key-value explorer for NoSQL cloud databases. Browse, preview, edit, and sea
 
 Built with [OpenTUI](https://opentui.ai), React, Bun, and Turborepo.
 
-## Quick start
+## Installation
+
+**Requirements:** [Bun](https://bun.sh) ≥ 1.3.0, [pnpm](https://pnpm.io) ≥ 10.0
 
 ```bash
+git clone <repo-url>
+cd kvex
+pnpm install
+
 # run from the repo
 pnpm kvex
 
-# or if linked globally
-kvex
+# or link globally so you can run "kvex" from anywhere
+cd apps/kvex && pnpm link --global
 ```
 
 ## Usage
