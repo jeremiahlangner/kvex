@@ -24,10 +24,14 @@ export function PreviewPane() {
       height={Math.floor(height / 2)}
       flexDirection="column"
       backgroundColor={state.focusedPane === 3 ? colors.pane.background : undefined}
-      title="Preview"
-      titleColor={state.focusedPane === 3 ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
+      <box flexDirection="row" justifyContent="center">
+        <text fg={state.focusedPane === 3 ? colors.pane.title.focused : colors.pane.title.unfocused}>
+          Preview
+        </text>
+      </box>
+      <box height={1} />
       <code
         content={jsonContent}
         filetype="json"
