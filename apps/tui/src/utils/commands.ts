@@ -11,8 +11,10 @@ export interface Command {
 }
 
 import { getThemeNames } from "../themes";
+import { getProviderNames } from "../providers/registry";
 
 const THEME_CMDS = ["theme", "t"];
+const PROVIDER_CMDS = ["provider", "p"];
 
 export function getBuiltinCommands(): Command[] {
   return [
@@ -49,6 +51,15 @@ export function getBuiltinCommands(): Command[] {
         return `theme:${args[0]}`;
       },
     },
+    {
+      name: "provider",
+      aliases: ["p"],
+      description: "Switch database provider (provider <name>)",
+      action: (args) => {
+        if (!args.length) return "Usage: provider <name>";
+        return `provider:${args[0]}`;
+      },
+    },
   ];
 }
 
@@ -71,6 +82,12 @@ export function getSuggestions(input: string): Suggestion[] {
   if (parts.length > 1 && THEME_CMDS.includes(cmdPart)) {
     const argPrefix = parts.slice(1).join(" ").toLowerCase();
     return getThemeNames()
+      .filter((name) => name.toLowerCase().startsWith(argPrefix))
+      .map((name) => ({ name, description: "" }));
+  }
+  if (parts.length > 1 && PROVIDER_CMDS.includes(cmdPart)) {
+    const argPrefix = parts.slice(1).join(" ").toLowerCase();
+    return getProviderNames()
       .filter((name) => name.toLowerCase().startsWith(argPrefix))
       .map((name) => ({ name, description: "" }));
   }

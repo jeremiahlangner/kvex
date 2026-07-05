@@ -9,9 +9,10 @@ interface CommandPaletteProps {
   onSearch: (query: string) => void;
   onSetEditor: (editor: string) => void;
   onSetTheme: (theme: string) => void;
+  onSetProvider: (name: string) => void;
 }
 
-export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: CommandPaletteProps) {
+export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSetProvider }: CommandPaletteProps) {
   const { state, dispatch } = useAppState();
   const colors = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -62,6 +63,10 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
         break;
       case "theme":
         if (parsed.args[0]) onSetTheme(parsed.args[0]);
+        closePalette();
+        break;
+      case "provider":
+        if (parsed.args[0]) onSetProvider(parsed.args[0]);
         closePalette();
         break;
       default:

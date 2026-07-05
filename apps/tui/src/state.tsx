@@ -8,7 +8,7 @@ import {
   type ConnectionStatus,
   DEFAULT_CONFIG,
 } from "./providers/types";
-import { LocalProvider } from "./providers/local-provider";
+import { createProvider } from "./providers/factory";
 
 export interface AppState {
   config: KvexConfig;
@@ -63,11 +63,12 @@ export type AppAction =
   | { type: "SET_STATUS"; status: string }
   | { type: "UPDATE_CONFIG"; config: Partial<KvexConfig> };
 
-export const initialState: AppState = {
-  config: DEFAULT_CONFIG,
-  provider: new LocalProvider(),
-  connectionStatus: "disconnected",
-  activeProviderType: "local",
+export function makeInitialState(config: KvexConfig = DEFAULT_CONFIG): AppState {
+  return {
+    config,
+    provider: createProvider(config.activeProvider),
+    connectionStatus: "disconnected",
+    activeProviderType: config.activeProvider,
   tables: [],
   selectedTable: null,
   tableSchema: null,
@@ -89,6 +90,7 @@ export const initialState: AppState = {
   errorMessage: null,
   statusMessage: "Ready",
 };
+}
 
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
@@ -153,10 +155,7 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children, initialConfig }: { children: ReactNode; initialConfig?: KvexConfig }) {
-  const [state, dispatch] = useReducer(appReducer, {
-    ...initialState,
-    ...(initialConfig ? { config: initialConfig } : {}),
-  });
+  const [state, dispatch] = useReducer(appReducer, initialConfig ? makeInitialState(initialConfig) : makeInitialState());
   return (
     <AppContext.Provider value={{ state, dispatch }}>
       {children}

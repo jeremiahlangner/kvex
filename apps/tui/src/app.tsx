@@ -11,6 +11,7 @@ import { editInEditor } from "./utils/editor";
 import { writeConfig } from "./config";
 import { cache } from "./cache";
 import { getThemeNames } from "./themes";
+import { createProvider, resolveProviderType, getProviderNames } from "./providers";
 
 function AppInner() {
   const { state, dispatch } = useAppState();
@@ -166,6 +167,47 @@ function AppInner() {
     }
   };
 
+  const handleSetProvider = async (name: string) => {
+    const names = getProviderNames();
+    if (!names.some((n) => n.toLowerCase() === name.toLowerCase())) {
+      dispatch({ type: "SET_STATUS", status: `Unknown provider: ${name} (available: ${names.join(", ")})` });
+      return;
+    }
+    const providerType = resolveProviderType(name);
+    if (!providerType) return;
+    if (providerType === state.activeProviderType) {
+      dispatch({ type: "SET_STATUS", status: `Already using ${name}` });
+      return;
+    }
+    dispatch({ type: "SET_CONNECTION_STATUS", status: "connecting" });
+    dispatch({ type: "SET_TABLES_LOADING", loading: true });
+    try {
+      await state.provider.disconnect();
+      const newProvider = createProvider(providerType);
+      await newProvider.connect();
+      dispatch({ type: "SET_PROVIDER", provider: newProvider });
+      dispatch({ type: "SET_ACTIVE_PROVIDER_TYPE", providerType });
+      dispatch({ type: "SET_CONNECTION_STATUS", status: "connected" });
+      dispatch({ type: "UPDATE_CONFIG", config: { activeProvider: providerType } });
+      await writeConfig({ ...state.config, activeProvider: providerType });
+      const tables = await newProvider.listTables();
+      dispatch({ type: "SET_TABLES", tables });
+      dispatch({ type: "SET_TABLES_LOADING", loading: false });
+      dispatch({ type: "SET_SELECTED_TABLE", table: tables.length > 0 ? tables[0].name : null });
+      dispatch({ type: "SET_TABLE_SCHEMA", schema: null });
+      dispatch({ type: "SET_PRIMARY_KEY_OPTIONS", options: [] });
+      dispatch({ type: "SET_PRIMARY_KEY_VALUE", value: null });
+      dispatch({ type: "SET_SORT_KEY_OPTIONS", options: [] });
+      dispatch({ type: "SET_SORT_KEY_VALUE", value: null });
+      dispatch({ type: "SET_PREVIEW_ITEM", item: null, key: null });
+      dispatch({ type: "SET_STATUS", status: `Switched to ${name}` });
+    } catch (err) {
+      dispatch({ type: "SET_CONNECTION_STATUS", status: "error" });
+      dispatch({ type: "SET_ERROR", error: String(err) });
+      dispatch({ type: "SET_TABLES_LOADING", loading: false });
+    }
+  };
+
   return (
     <box flexDirection="column" width="100%" height="100%">
       <PreviewPane />
@@ -180,6 +222,7 @@ function AppInner() {
         onSearch={handleSearch}
         onSetEditor={handleSetEditor}
         onSetTheme={handleSetTheme}
+        onSetProvider={handleSetProvider}
       />
       <box height={1} />
       <StatusBar />
