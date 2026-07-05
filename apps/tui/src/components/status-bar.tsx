@@ -1,15 +1,17 @@
 import { useAppState } from "../state";
-import { getCollectionLabel } from "../providers/types";
+import { getCollectionLabel, getConnectionLabel } from "../providers/types";
 import { useTheme } from "../themes";
 
 export function StatusBar() {
   const { state } = useAppState();
   const colors = useTheme();
-  const connColor =
-    state.connectionStatus === "connected" ? colors.status.connected :
-    state.connectionStatus === "error" ? colors.status.error : colors.status.warning;
 
-  const label = getCollectionLabel(state.activeProviderType);
+  const connColor =
+    state.connectivity === "online" ? colors.status.connected :
+    state.connectivity === "offline" ? colors.status.error : colors.status.warning;
+
+  const displayLabel = getConnectionLabel(state.activeProviderType);
+  const collectionLabel = getCollectionLabel(state.activeProviderType);
 
   return (
     <box
@@ -21,7 +23,7 @@ export function StatusBar() {
       paddingRight={1}
     >
       <text fg={connColor}>
-        {state.activeProviderType} / {label}  •  {state.connectionStatus}
+        {displayLabel} / {collectionLabel}  •  {state.connectivity}
       </text>
     </box>
   );

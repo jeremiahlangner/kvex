@@ -1,4 +1,5 @@
 import { useKeyboard, useRenderer } from "@opentui/react";
+import { useEffect, useRef } from "react";
 import { AppProvider, useAppState } from "./state";
 import { PreviewPane } from "./components/preview-pane";
 import { DatabaseSelect } from "./components/database-select";
@@ -12,10 +13,22 @@ import { writeConfig } from "./config";
 import { cache } from "./cache";
 import { getThemeNames } from "./themes";
 import { createProvider, resolveProviderType, getProviderNames } from "./providers";
+import { ConnectivityMonitor } from "./utils/connectivity";
 
 function AppInner() {
   const { state, dispatch } = useAppState();
   const renderer = useRenderer();
+  const monitorRef = useRef<ConnectivityMonitor | null>(null);
+
+  useEffect(() => {
+    if (!monitorRef.current) {
+      monitorRef.current = new ConnectivityMonitor((connectivity) => {
+        dispatch({ type: "SET_CONNECTIVITY", connectivity });
+      });
+    }
+    monitorRef.current.start(state.activeProviderType);
+    return () => monitorRef.current?.stop();
+  }, [state.activeProviderType, dispatch]);
 
   useKeyboard((key) => {
     if (state.confirmDialog) return false;

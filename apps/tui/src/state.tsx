@@ -6,6 +6,7 @@ import {
   type KvexConfig,
   type ConfirmDialog,
   type ConnectionStatus,
+  type ConnectivityState,
   DEFAULT_CONFIG,
 } from "./providers/types";
 import { createProvider } from "./providers/factory";
@@ -29,6 +30,7 @@ export interface AppState {
   commandSuggestions: string[];
   confirmDialog: ConfirmDialog | null;
   focusedPane: number;
+  connectivity: ConnectivityState;
   tablesLoading: boolean;
   primaryKeyLoading: boolean;
   sortKeyLoading: boolean;
@@ -55,6 +57,7 @@ export type AppAction =
   | { type: "SET_COMMAND_SUGGESTIONS"; suggestions: string[] }
   | { type: "SET_CONFIRM_DIALOG"; dialog: ConfirmDialog | null }
   | { type: "SET_FOCUSED_PANE"; pane: number }
+  | { type: "SET_CONNECTIVITY"; connectivity: ConnectivityState }
   | { type: "SET_TABLES_LOADING"; loading: boolean }
   | { type: "SET_PRIMARY_KEY_LOADING"; loading: boolean }
   | { type: "SET_SORT_KEY_LOADING"; loading: boolean }
@@ -68,6 +71,7 @@ export function makeInitialState(config: KvexConfig = DEFAULT_CONFIG): AppState 
     config,
     provider: createProvider(config.activeProvider),
     connectionStatus: "disconnected",
+    connectivity: config.activeProvider === "local" ? "local" : "offline",
     activeProviderType: config.activeProvider,
   tables: [],
   selectedTable: null,
@@ -128,6 +132,8 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, confirmDialog: action.dialog };
     case "SET_FOCUSED_PANE":
       return { ...state, focusedPane: action.pane };
+    case "SET_CONNECTIVITY":
+      return { ...state, connectivity: action.connectivity };
     case "SET_TABLES_LOADING":
       return { ...state, tablesLoading: action.loading };
     case "SET_PRIMARY_KEY_LOADING":
