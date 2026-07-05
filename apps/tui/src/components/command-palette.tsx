@@ -104,7 +104,10 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     }
     if (key.name === "tab") {
       if (reversedSuggestions.length > 0) {
-        dispatch({ type: "SET_COMMAND_BUFFER", buffer: reversedSuggestions[selectedIndex].name + " " });
+        const suggestion = reversedSuggestions[selectedIndex].name;
+        const parsed = parseCommand(suggestion);
+        const needsArg = parsed && parsed.command !== "quit";
+        dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestion + (needsArg ? " " : "") });
         resetIndex();
       }
       return true;
