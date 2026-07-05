@@ -17,6 +17,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
+  const reversedSuggestions = useMemo(() => suggestions.slice().reverse(), [suggestions]);
 
   const firstSpaceIdx = state.commandBuffer.indexOf(" ");
   const cmdName = firstSpaceIdx >= 0 ? state.commandBuffer.slice(0, firstSpaceIdx) : state.commandBuffer;
@@ -59,6 +60,8 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     }
   };
 
+  const resetIndex = () => setSelectedIndex(Math.max(0, reversedSuggestions.length - 1));
+
   const closePalette = () => {
     dispatch({ type: "SET_COMMAND_OPEN", open: false });
     dispatch({ type: "SET_COMMAND_BUFFER", buffer: "" });
@@ -67,7 +70,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
 
   const appendBuffer = (char: string) => {
     dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer + char });
-    setSelectedIndex(0);
+    resetIndex();
   };
 
   useKeyboard((key) => {
@@ -78,32 +81,32 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       return true;
     }
     if (key.name === "up") {
-      if (suggestions.length > 0) {
-        setSelectedIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+      if (reversedSuggestions.length > 0) {
+        setSelectedIndex((prev) => (prev - 1 + reversedSuggestions.length) % reversedSuggestions.length);
       }
       return true;
     }
     if (key.name === "down") {
-      if (suggestions.length > 0) {
-        setSelectedIndex((prev) => (prev + 1) % suggestions.length);
+      if (reversedSuggestions.length > 0) {
+        setSelectedIndex((prev) => (prev + 1) % reversedSuggestions.length);
       }
       return true;
     }
     if (key.name === "tab") {
-      if (suggestions.length > 0) {
-        dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestions[selectedIndex].name });
-        setSelectedIndex(0);
+      if (reversedSuggestions.length > 0) {
+        dispatch({ type: "SET_COMMAND_BUFFER", buffer: reversedSuggestions[selectedIndex].name });
+        resetIndex();
       }
       return true;
     }
     if (key.name === "backspace") {
       dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer.slice(0, -1) });
-      setSelectedIndex(0);
+      resetIndex();
       return true;
     }
     if (key.ctrl && key.name === "u") {
       dispatch({ type: "SET_COMMAND_BUFFER", buffer: "" });
-      setSelectedIndex(0);
+      resetIndex();
       return true;
     }
     if (key.name === "return") {
@@ -132,15 +135,15 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
 
   return (
     <box
-      height={6}
+      height={10}
       width="100%"
       flexDirection="column"
       backgroundColor={colors.pane.background}
     >
       <select
-        options={suggestions.map(s => ({ name: `${s.name}  ${s.description}`, description: "" }))}
-        selectedIndex={suggestions.length > 0 ? selectedIndex : 0}
-        height={3}
+        options={reversedSuggestions.map(s => ({ name: `${s.name}  ${s.description}`, description: "" }))}
+        selectedIndex={reversedSuggestions.length > 0 ? selectedIndex : 0}
+        height={7}
         focused={true}
         showScrollIndicator={true}
         showDescription={false}
