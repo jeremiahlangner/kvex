@@ -1,38 +1,40 @@
+import { type ColorInput } from "@opentui/core";
+
 export interface ThemeColors {
   pane: {
-    background: string;
-    title: { focused: string; unfocused: string };
-    loading: string;
+    background: ColorInput;
+    title: { focused: ColorInput; unfocused: ColorInput };
+    loading: ColorInput;
   };
   palette: {
-    prompt: string;
-    suggestion: { selected: string; unselected: string; bg: string };
-    hint: string;
+    prompt: ColorInput;
+    suggestion: { selected: ColorInput; unselected: ColorInput; bg: ColorInput };
+    hint: ColorInput;
   };
   confirm: {
-    background: string;
-    message: string;
+    background: ColorInput;
+    message: ColorInput;
   };
   explorer: {
-    selectedBg: string;
-    selectedText: string;
+    selectedBg: ColorInput;
+    selectedText: ColorInput;
   };
   status: {
-    connected: string;
-    error: string;
-    warning: string;
+    connected: ColorInput;
+    error: ColorInput;
+    warning: ColorInput;
   };
   syntax: {
-    default: string;
-    comment: string;
-    string: string;
-    number: string;
-    keyword: string;
-    function: string;
-    property: string;
-    operator: string;
-    punctuation: string;
-    tag: string;
-    type: string;
+    default: ColorInput;
+    comment: ColorInput;
+    string: ColorInput;
+    number: ColorInput;
+    keyword: ColorInput;
+    function: ColorInput;
+    property: ColorInput;
+    operator: ColorInput;
+    punctuation: ColorInput;
+    tag: ColorInput;
+    type: ColorInput;
   };
 }

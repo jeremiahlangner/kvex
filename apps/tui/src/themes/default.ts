@@ -1,52 +1,53 @@
 import { type ThemeColors } from "./types";
+import { RGBA } from "@opentui/core";
 
 export const theme: ThemeColors = {
   pane: {
-    background: "#1a1a3e",
+    background: "transparent",
     title: {
-      focused: "#FFFFFF",
-      unfocused: "#555577",
+      focused: RGBA.defaultForeground(),
+      unfocused: RGBA.fromIndex(8),
     },
-    loading: "#888888",
+    loading: RGBA.fromIndex(8),
   },
 
   palette: {
-    prompt: "#6666FF",
+    prompt: RGBA.fromIndex(4),
     suggestion: {
-      selected: "#FFFFFF",
-      unselected: "#7777aa",
-      bg: "#2a2a5e",
+      selected: RGBA.defaultForeground(),
+      unselected: RGBA.fromIndex(8),
+      bg: "transparent",
     },
-    hint: "#555577",
+    hint: RGBA.fromIndex(8),
   },
 
   confirm: {
-    background: "#1a1a3e",
-    message: "#FFFFFF",
+    background: "transparent",
+    message: RGBA.defaultForeground(),
   },
 
   explorer: {
-    selectedBg: "#2a2a5e",
-    selectedText: "#FFFFFF",
+    selectedBg: RGBA.fromIndex(8),
+    selectedText: RGBA.defaultForeground(),
   },
 
   status: {
-    connected: "#00FF00",
-    error: "#FF0000",
-    warning: "#FFFF00",
+    connected: RGBA.fromIndex(2),
+    error: RGBA.fromIndex(1),
+    warning: RGBA.fromIndex(3),
   },
 
   syntax: {
-    default: "#FFFFFF",
-    comment: "#6A9955",
-    string: "#CE9178",
-    number: "#B5CEA8",
-    keyword: "#569CD6",
-    function: "#DCDCAA",
-    property: "#9CDCFE",
-    operator: "#D4D4D4",
-    punctuation: "#D4D4D4",
-    tag: "#569CD6",
-    type: "#4EC9B0",
+    default: RGBA.defaultForeground(),
+    comment: RGBA.fromIndex(8),
+    string: RGBA.fromIndex(10),
+    number: RGBA.fromIndex(13),
+    keyword: RGBA.fromIndex(12),
+    function: RGBA.fromIndex(14),
+    property: RGBA.fromIndex(6),
+    operator: RGBA.defaultForeground(),
+    punctuation: RGBA.defaultForeground(),
+    tag: RGBA.fromIndex(4),
+    type: RGBA.fromIndex(11),
   },
 };

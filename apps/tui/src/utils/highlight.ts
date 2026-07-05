@@ -1,4 +1,4 @@
-import { RGBA } from "@opentui/core";
+import { parseColor, type RGBA } from "@opentui/core";
 import type { TextChunk, ChunkRenderContext } from "@opentui/core";
 import type { ThemeColors } from "../themes/types";
 
@@ -26,10 +26,10 @@ export function createOnChunks(colors: ThemeColors) {
 }
 
 function tokenColor(match: RegExpExecArray, c: ThemeColors["syntax"]): RGBA {
-  if (match[1]) return RGBA.fromHex(c.property);
-  if (match[3]) return RGBA.fromHex(c.string);
-  if (match[4]) return RGBA.fromHex(c.keyword);
-  if (match[5]) return RGBA.fromHex(c.number);
-  if (match[6]) return RGBA.fromHex(c.punctuation);
-  return RGBA.fromHex(c.default);
+  if (match[1]) return parseColor(c.property);
+  if (match[3]) return parseColor(c.string);
+  if (match[4]) return parseColor(c.keyword);
+  if (match[5]) return parseColor(c.number);
+  if (match[6]) return parseColor(c.punctuation);
+  return parseColor(c.default);
 }
