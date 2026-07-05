@@ -16,15 +16,12 @@ export function StatusBar() {
       height={1}
       width="100%"
       flexDirection="row"
-      justifyContent="space-between"
+      justifyContent="flex-end"
       paddingLeft={1}
       paddingRight={1}
     >
       <text fg={connColor}>
         {state.activeProviderType} / {label}  •  {state.connectionStatus}
-      </text>
-      <text fg={colors.status.hint}>
-        editor: {state.config.editor}  |  / cmd  |  Tab nav  |  q quit
       </text>
     </box>
   );
