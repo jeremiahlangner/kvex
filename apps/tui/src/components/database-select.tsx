@@ -89,6 +89,10 @@ export function DatabaseSelect() {
           height={state.tables.length}
           itemSpacing={0}
           showDescription={false}
+          textColor={colors.pane.title.unfocused}
+          focusedTextColor={colors.pane.title.unfocused}
+          selectedBackgroundColor={colors.explorer.selectedBg}
+          selectedTextColor={colors.explorer.selectedText}
         />
       )}
     </box>

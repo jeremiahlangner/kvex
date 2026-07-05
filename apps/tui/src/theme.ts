@@ -35,6 +35,11 @@ export const colors = {
     hint: "#AAAAAA",
   },
 
+  explorer: {
+    selectedBg: "#2a2a5e",
+    selectedText: "#FFFFFF",
+  },
+
   status: {
     connected: "#00FF00",
     error: "#FF0000",
