@@ -1,7 +1,7 @@
 import { useAppState } from "../state";
 import { getSuggestions, parseCommand } from "../utils/commands";
 import { useKeyboard } from "@opentui/react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTheme } from "../themes";
 
 interface CommandPaletteProps {
@@ -15,6 +15,13 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
   const { state, dispatch } = useAppState();
   const colors = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
+
+  useEffect(() => {
+    if (!state.commandOpen) return;
+    const id = setInterval(() => setCursorVisible(v => !v), 530);
+    return () => clearInterval(id);
+  }, [state.commandOpen]);
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
   const reversedSuggestions = useMemo(() => suggestions.slice().reverse(), [suggestions]);
@@ -97,7 +104,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     }
     if (key.name === "tab") {
       if (reversedSuggestions.length > 0) {
-        dispatch({ type: "SET_COMMAND_BUFFER", buffer: reversedSuggestions[selectedIndex].name });
+        dispatch({ type: "SET_COMMAND_BUFFER", buffer: reversedSuggestions[selectedIndex].name + " " });
         resetIndex();
       }
       return true;
@@ -165,11 +172,15 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
           <box flexDirection="row">
             <text fg={colors.palette.text.command}>{cmdName}</text>
             <text fg={colors.palette.text.command}> </text>
-            <text>{inputPart}</text>
+            <text>
+              {inputPart}
+              <span attributes={16}>{cursorVisible ? "|" : " "}</span>
+            </text>
           </box>
         ) : (
           <text fg={isKnownCommand ? colors.palette.text.command : undefined}>
             {state.commandBuffer}
+            <span attributes={16}>{cursorVisible ? "|" : " "}</span>
           </text>
         )}
       </box>
