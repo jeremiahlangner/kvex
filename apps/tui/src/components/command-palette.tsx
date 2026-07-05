@@ -144,7 +144,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
 
   return (
     <box
-      height={state.commandOpen ? paletteHeight : 1}
+      height={state.commandOpen ? paletteHeight : 3}
       width="100%"
       flexDirection="column"
       backgroundColor={colors.pane.background}
@@ -153,7 +153,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       borderColor={colors.palette.prompt}
     >
       {!state.commandOpen ? (
-        <box height={1} flexDirection="row" alignItems="center" paddingLeft={1}>
+        <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
           <text fg={colors.palette.hint}>Press '/' for commands</text>
         </box>
       ) : (
