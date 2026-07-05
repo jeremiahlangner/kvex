@@ -1,22 +1,18 @@
 import { SyntaxStyle, RGBA } from "@opentui/core";
+import type { ThemeColors } from "../themes/types";
 
-let _syntaxStyle: SyntaxStyle | null = null;
-
-export function getSyntaxStyle(): SyntaxStyle {
-  if (!_syntaxStyle) {
-    _syntaxStyle = SyntaxStyle.fromStyles({
-      default: { fg: RGBA.fromHex("#FFFFFF") },
-      comment: { fg: RGBA.fromHex("#6A9955") },
-      string: { fg: RGBA.fromHex("#CE9178") },
-      number: { fg: RGBA.fromHex("#B5CEA8") },
-      keyword: { fg: RGBA.fromHex("#569CD6") },
-      function: { fg: RGBA.fromHex("#DCDCAA") },
-      property: { fg: RGBA.fromHex("#9CDCFE") },
-      operator: { fg: RGBA.fromHex("#D4D4D4") },
-      punctuation: { fg: RGBA.fromHex("#D4D4D4") },
-      tag: { fg: RGBA.fromHex("#569CD6") },
-      type: { fg: RGBA.fromHex("#4EC9B0") },
-    });
-  }
-  return _syntaxStyle;
+export function getSyntaxStyle(colors: ThemeColors): SyntaxStyle {
+  return SyntaxStyle.fromStyles({
+    default: { fg: RGBA.fromHex(colors.syntax.default) },
+    comment: { fg: RGBA.fromHex(colors.syntax.comment) },
+    string: { fg: RGBA.fromHex(colors.syntax.string) },
+    number: { fg: RGBA.fromHex(colors.syntax.number) },
+    keyword: { fg: RGBA.fromHex(colors.syntax.keyword) },
+    function: { fg: RGBA.fromHex(colors.syntax.function) },
+    property: { fg: RGBA.fromHex(colors.syntax.property) },
+    operator: { fg: RGBA.fromHex(colors.syntax.operator) },
+    punctuation: { fg: RGBA.fromHex(colors.syntax.punctuation) },
+    tag: { fg: RGBA.fromHex(colors.syntax.tag) },
+    type: { fg: RGBA.fromHex(colors.syntax.type) },
+  });
 }

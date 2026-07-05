@@ -48,4 +48,18 @@ export const theme: ThemeColors = {
     warning: "#e0af68",
     hint: "#565f89",
   },
+
+  syntax: {
+    default: "#c0caf5",
+    comment: "#565f89",
+    string: "#9ece6a",
+    number: "#ff9e64",
+    keyword: "#7aa2f7",
+    function: "#bb9af7",
+    property: "#7dcfff",
+    operator: "#a9b1d6",
+    punctuation: "#a9b1d6",
+    tag: "#7aa2f7",
+    type: "#73daca",
+  },
 };

@@ -29,4 +29,17 @@ export interface ThemeColors {
     warning: string;
     hint: string;
   };
+  syntax: {
+    default: string;
+    comment: string;
+    string: string;
+    number: string;
+    keyword: string;
+    function: string;
+    property: string;
+    operator: string;
+    punctuation: string;
+    tag: string;
+    type: string;
+  };
 }

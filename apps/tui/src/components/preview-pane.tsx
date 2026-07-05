@@ -1,6 +1,7 @@
+import { useMemo } from "react";
 import { useAppState } from "../state";
 import { getSyntaxStyle } from "../utils/syntax";
-import { onChunks, getHighlightClient } from "../utils/highlight";
+import { createOnChunks } from "../utils/highlight";
 import { useTerminalDimensions } from "@opentui/react";
 import { useTheme } from "../themes";
 
@@ -8,6 +9,9 @@ export function PreviewPane() {
   const { state } = useAppState();
   const colors = useTheme();
   const { height } = useTerminalDimensions();
+
+  const syntaxStyle = useMemo(() => getSyntaxStyle(colors), [colors]);
+  const onChunks = useMemo(() => createOnChunks(colors), [colors]);
 
   const jsonContent = state.previewLoading
     ? "Loading..."
@@ -27,8 +31,7 @@ export function PreviewPane() {
       <code
         content={jsonContent}
         filetype="json"
-        syntaxStyle={getSyntaxStyle()}
-        treeSitterClient={getHighlightClient()}
+        syntaxStyle={syntaxStyle}
         onChunks={onChunks}
         width="100%"
       />
