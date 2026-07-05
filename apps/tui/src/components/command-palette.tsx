@@ -135,7 +135,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       height={8}
       width="100%"
       flexDirection="column"
-      backgroundColor={colors.palette.background}
+      backgroundColor={colors.explorer.selectedBg}
       borderStyle="heavy"
       border={["left"]}
       borderColor={colors.palette.border}
