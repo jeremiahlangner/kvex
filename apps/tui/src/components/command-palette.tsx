@@ -177,13 +177,13 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
             <text fg={colors.palette.text.command}> </text>
             <text>
               {inputPart}
-              <span attributes={16}>{cursorVisible ? "|" : " "}</span>
+              <span attributes={16}>{cursorVisible ? "█" : " "}</span>
             </text>
           </box>
         ) : (
           <text fg={isKnownCommand ? colors.palette.text.command : undefined}>
             {state.commandBuffer}
-            <span attributes={16}>{cursorVisible ? "|" : " "}</span>
+            <span attributes={16}>{cursorVisible ? "█" : " "}</span>
           </text>
         )}
       </box>
