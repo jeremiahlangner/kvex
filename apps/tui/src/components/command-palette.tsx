@@ -43,8 +43,8 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
   const executeCommand = () => {
     const parsed = parseCommand(state.commandBuffer);
     if (!parsed) {
-      dispatch({ type: "SET_STATUS", status: `Unknown: ${state.commandBuffer}` });
       closePalette();
+      onSearch(state.commandBuffer);
       return;
     }
     switch (parsed.command) {
@@ -158,7 +158,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       backgroundColor={colors.pane.background}
     >
       <select
-        options={reversedSuggestions.map(s => ({ name: `${s.name}  ${s.description}`, description: "" }))}
+        options={reversedSuggestions.map(s => ({ name: s.description ? `/${s.name}  ${s.description}` : s.name, description: "" }))}
         selectedIndex={reversedSuggestions.length > 0 ? selectedIndex : 0}
         height={suggestionHeight}
         focused={true}
