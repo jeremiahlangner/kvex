@@ -13,8 +13,8 @@ export const theme: ThemeColors = {
   palette: {
     prompt: "#bb9af7",
     suggestion: {
-      selected: "#c0caf5",
-      unselected: "#565f89",
+      selected: "#d0daf5",
+      unselected: "#767fa9",
       bg: "#283457",
     },
     hint: "#565f89",

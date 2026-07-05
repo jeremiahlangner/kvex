@@ -14,7 +14,7 @@ export const theme: ThemeColors = {
     prompt: "#6666FF",
     suggestion: {
       selected: "#FFFFFF",
-      unselected: "#555577",
+      unselected: "#7777aa",
       bg: "#2a2a5e",
     },
     hint: "#555577",
