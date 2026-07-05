@@ -154,7 +154,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     >
       {!state.commandOpen ? (
         <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-          <text fg={colors.palette.hint}>Press '/' for commands</text>
+          <text fg={colors.palette.hint}>Press '/' for commands or type to search</text>
         </box>
       ) : (
         <>
