@@ -2,11 +2,10 @@ import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { MockProvider } from "../providers/mock-provider";
 import { type DatabaseProvider, getCollectionLabel } from "../providers/types";
-import { useTheme } from "../themes";
+import { ExplorerPane } from "./explorer-pane";
 
 export function DatabaseSelect() {
   const { state, dispatch } = useAppState();
-  const colors = useTheme();
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -71,36 +70,14 @@ export function DatabaseSelect() {
   const selectedTableIndex = state.tables.findIndex((t) => t.name === state.selectedTable);
 
   return (
-    <box
-      flexGrow={1}
-      flexBasis={0}
-      flexDirection="column"
-      backgroundColor={state.focusedPane === 0 ? colors.pane.background : undefined}
-      padding={1}
-    >
-      <text fg={state.focusedPane === 0 ? colors.pane.title.focused : colors.pane.title.unfocused}>
-        {label}
-      </text>
-      <box height={1} />
-      {state.tablesLoading ? (
-        <text fg={colors.pane.loading}>Loading...</text>
-      ) : (
-        <select
-          options={tableOptions}
-          selectedIndex={selectedTableIndex >= 0 ? selectedTableIndex : 0}
-          onChange={handleTableChange}
-          focused={state.focusedPane === 0}
-          height={state.tables.length}
-          itemSpacing={0}
-          showDescription={false}
-          textColor={colors.pane.title.unfocused}
-          focusedTextColor={colors.pane.title.unfocused}
-          backgroundColor="transparent"
-          focusedBackgroundColor="transparent"
-          selectedBackgroundColor={colors.explorer.selectedBg}
-          selectedTextColor={colors.explorer.selectedText}
-        />
-      )}
-    </box>
+    <ExplorerPane
+      focused={state.focusedPane === 0}
+      title={label}
+      loading={state.tablesLoading}
+      options={tableOptions}
+      selectedIndex={selectedTableIndex}
+      onChange={handleTableChange}
+      selectHeight={state.tables.length}
+    />
   );
 }

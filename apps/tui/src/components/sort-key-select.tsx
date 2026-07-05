@@ -1,11 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { cache } from "../cache";
-import { useTheme } from "../themes";
+import { ExplorerPane } from "./explorer-pane";
 
 export function SortKeySelect() {
   const { state, dispatch } = useAppState();
-  const colors = useTheme();
   const prevSkRef = useRef<string | null>(null);
 
   const loadItem = async () => {
@@ -50,36 +49,13 @@ export function SortKeySelect() {
   const selectedIdx = state.sortKeyOptions.indexOf(state.sortKeyValue ?? "");
 
   return (
-    <box
-      flexGrow={1}
-      flexBasis={0}
-      flexDirection="column"
-      backgroundColor={state.focusedPane === 2 ? colors.pane.background : undefined}
-      padding={1}
-    >
-      <text fg={state.focusedPane === 2 ? colors.pane.title.focused : colors.pane.title.unfocused}>
-        {`Sort Key (${range})`}
-      </text>
-      <box height={1} />
-      {state.sortKeyLoading ? (
-        <text fg={colors.pane.loading}>Loading...</text>
-      ) : (
-        <select
-          options={options}
-          selectedIndex={selectedIdx >= 0 ? selectedIdx : 0}
-          onChange={handleChange}
-          focused={state.focusedPane === 2}
-          height={10}
-          itemSpacing={0}
-          showDescription={false}
-          textColor={colors.pane.title.unfocused}
-          focusedTextColor={colors.pane.title.unfocused}
-          backgroundColor="transparent"
-          focusedBackgroundColor="transparent"
-          selectedBackgroundColor={colors.explorer.selectedBg}
-          selectedTextColor={colors.explorer.selectedText}
-        />
-      )}
-    </box>
+    <ExplorerPane
+      focused={state.focusedPane === 2}
+      title={`Sort Key (${range})`}
+      loading={state.sortKeyLoading}
+      options={options}
+      selectedIndex={selectedIdx}
+      onChange={handleChange}
+    />
   );
 }
