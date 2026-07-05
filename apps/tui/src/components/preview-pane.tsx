@@ -1,10 +1,12 @@
 import { useAppState } from "../state";
 import { getSyntaxStyle } from "../utils/syntax";
 import { onChunks, getHighlightClient } from "../utils/highlight";
+import { useTerminalDimensions } from "@opentui/react";
 import { colors } from "../theme";
 
 export function PreviewPane() {
   const { state } = useAppState();
+  const { height } = useTerminalDimensions();
 
   const jsonContent = state.previewLoading
     ? "Loading..."
@@ -14,7 +16,7 @@ export function PreviewPane() {
 
   return (
     <box
-      flexGrow={1}
+      height={Math.floor(height / 2)}
       flexDirection="column"
       backgroundColor={state.focusedPane === 3 && !state.commandOpen ? colors.pane.background : undefined}
       title="Preview"
