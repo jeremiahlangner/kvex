@@ -2,16 +2,18 @@ import { useAppState } from "../state";
 import { getSuggestions, parseCommand } from "../utils/commands";
 import { useKeyboard } from "@opentui/react";
 import { useState, useMemo } from "react";
-import { colors } from "../theme";
+import { useTheme } from "../themes";
 
 interface CommandPaletteProps {
   onQuit: () => void;
   onSearch: (query: string) => void;
   onSetEditor: (editor: string) => void;
+  onSetTheme: (theme: string) => void;
 }
 
-export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPaletteProps) {
+export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: CommandPaletteProps) {
   const { state, dispatch } = useAppState();
+  const colors = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
@@ -45,6 +47,10 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor }: CommandPalette
         break;
       case "editor":
         if (parsed.args[0]) onSetEditor(parsed.args[0]);
+        closePalette();
+        break;
+      case "theme":
+        if (parsed.args[0]) onSetTheme(parsed.args[0]);
         closePalette();
         break;
       default:

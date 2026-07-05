@@ -10,6 +10,10 @@ export interface Command {
   action: (args: string[]) => string | void;
 }
 
+import { getThemeNames } from "../themes";
+
+const THEME_CMDS = ["theme", "t"];
+
 export function getBuiltinCommands(): Command[] {
   return [
     {
@@ -36,6 +40,15 @@ export function getBuiltinCommands(): Command[] {
         return `editor:${args[0]}`;
       },
     },
+    {
+      name: "theme",
+      aliases: ["t"],
+      description: "Set the color theme (theme <name>)",
+      action: (args) => {
+        if (!args.length) return "Usage: theme <name>";
+        return `theme:${args[0]}`;
+      },
+    },
   ];
 }
 
@@ -52,6 +65,16 @@ export function getSuggestions(input: string): Suggestion[] {
   }
   if (!input) return all;
   const lower = input.toLowerCase();
+
+  const parts = input.split(/\s+/);
+  const cmdPart = parts[0].toLowerCase();
+  if (parts.length > 1 && THEME_CMDS.includes(cmdPart)) {
+    const argPrefix = parts.slice(1).join(" ").toLowerCase();
+    return getThemeNames()
+      .filter((name) => name.toLowerCase().startsWith(argPrefix))
+      .map((name) => ({ name, description: "" }));
+  }
+
   return all.filter((s) => s.name.startsWith(lower));
 }
 

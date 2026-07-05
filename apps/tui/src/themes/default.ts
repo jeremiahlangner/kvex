@@ -1,4 +1,6 @@
-export const colors = {
+import { type ThemeColors } from "./types";
+
+export const theme: ThemeColors = {
   pane: {
     background: "#1a1a3e",
     title: {
@@ -46,4 +48,4 @@ export const colors = {
     warning: "#FFFF00",
     hint: "#888888",
   },
-} as const;
+};

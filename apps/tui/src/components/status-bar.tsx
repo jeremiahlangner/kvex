@@ -1,9 +1,10 @@
 import { useAppState } from "../state";
 import { getCollectionLabel } from "../providers/types";
-import { colors } from "../theme";
+import { useTheme } from "../themes";
 
 export function StatusBar() {
   const { state } = useAppState();
+  const colors = useTheme();
   const connColor =
     state.connectionStatus === "connected" ? colors.status.connected :
     state.connectionStatus === "error" ? colors.status.error : colors.status.warning;

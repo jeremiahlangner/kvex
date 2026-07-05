@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { cache } from "../cache";
-import { colors } from "../theme";
+import { useTheme } from "../themes";
 
 export function SortKeySelect() {
   const { state, dispatch } = useAppState();
+  const colors = useTheme();
   const prevSkRef = useRef<string | null>(null);
 
   const loadItem = async () => {

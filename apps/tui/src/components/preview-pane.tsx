@@ -2,10 +2,11 @@ import { useAppState } from "../state";
 import { getSyntaxStyle } from "../utils/syntax";
 import { onChunks, getHighlightClient } from "../utils/highlight";
 import { useTerminalDimensions } from "@opentui/react";
-import { colors } from "../theme";
+import { useTheme } from "../themes";
 
 export function PreviewPane() {
   const { state } = useAppState();
+  const colors = useTheme();
   const { height } = useTerminalDimensions();
 
   const jsonContent = state.previewLoading

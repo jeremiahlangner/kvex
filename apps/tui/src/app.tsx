@@ -10,6 +10,7 @@ import { ConfirmDialog } from "./components/confirm-dialog";
 import { editInEditor } from "./utils/editor";
 import { writeConfig } from "./config";
 import { cache } from "./cache";
+import { getThemeNames } from "./themes";
 
 function AppInner() {
   const { state, dispatch } = useAppState();
@@ -146,6 +147,21 @@ function AppInner() {
     }
   };
 
+  const handleSetTheme = async (name: string) => {
+    const names = getThemeNames();
+    if (!names.includes(name)) {
+      dispatch({ type: "SET_STATUS", status: `Unknown theme: ${name} (available: ${names.join(", ")})` });
+      return;
+    }
+    dispatch({ type: "UPDATE_CONFIG", config: { theme: name } });
+    try {
+      await writeConfig({ ...state.config, theme: name });
+      dispatch({ type: "SET_STATUS", status: `Theme set to ${name}` });
+    } catch {
+      dispatch({ type: "SET_ERROR", error: "Failed to save config" });
+    }
+  };
+
   return (
     <box flexDirection="column" width="100%" height="100%">
       <PreviewPane />
@@ -158,6 +174,7 @@ function AppInner() {
         onQuit={handleQuit}
         onSearch={handleSearch}
         onSetEditor={handleSetEditor}
+        onSetTheme={handleSetTheme}
       />
       <box height={1} />
       <StatusBar />

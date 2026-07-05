@@ -26,11 +26,13 @@ export interface DatabaseProvider {
 export interface KvexConfig {
   editor: string;
   activeProvider: ProviderType;
+  theme: string;
 }
 
 export const DEFAULT_CONFIG: KvexConfig = {
   editor: "vim",
   activeProvider: "mock",
+  theme: "default",
 };
 
 export interface ConfirmDialog {

@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { MockProvider } from "../providers/mock-provider";
 import { type DatabaseProvider, getCollectionLabel } from "../providers/types";
-import { colors } from "../theme";
+import { useTheme } from "../themes";
 
 export function DatabaseSelect() {
   const { state, dispatch } = useAppState();
+  const colors = useTheme();
   const initialized = useRef(false);
 
   useEffect(() => {

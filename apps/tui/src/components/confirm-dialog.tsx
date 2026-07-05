@@ -1,9 +1,10 @@
 import { useKeyboard } from "@opentui/react";
 import { useAppState } from "../state";
-import { colors } from "../theme";
+import { useTheme } from "../themes";
 
 export function ConfirmDialog() {
   const { state, dispatch } = useAppState();
+  const colors = useTheme();
 
   useKeyboard((key) => {
     if (!state.confirmDialog) return false;
