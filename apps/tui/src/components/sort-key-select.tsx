@@ -70,6 +70,8 @@ export function SortKeySelect() {
           showDescription={false}
           textColor={colors.pane.title.unfocused}
           focusedTextColor={colors.pane.title.unfocused}
+          backgroundColor="transparent"
+          focusedBackgroundColor="transparent"
           selectedBackgroundColor={colors.explorer.selectedBg}
           selectedTextColor={colors.explorer.selectedText}
         />
