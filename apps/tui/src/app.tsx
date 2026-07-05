@@ -149,7 +149,7 @@ function AppInner() {
   return (
     <box flexDirection="column" width="100%" height="100%">
       <PreviewPane />
-      <box flexDirection="row" flexGrow={1} gap={1} padding={1}>
+      <box flexDirection="row" flexGrow={1}>
         <DatabaseSelect />
         <KeySelect />
         <SortKeySelect />
