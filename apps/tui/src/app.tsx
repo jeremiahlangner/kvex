@@ -40,13 +40,17 @@ function AppInner() {
     }
 
     if (key.name === "tab" && !state.commandOpen) {
+      const lastKey = state.tableSchema?.range ? 2 : (state.tableSchema ? 1 : -1);
+      if (lastKey < 0) return false;
       if (state.focusedPane === 3) {
-        const lastExplorer = state.tableSchema?.range ? 2 : (state.tableSchema ? 1 : 0);
-        dispatch({ type: "SET_FOCUSED_PANE", pane: lastExplorer });
-      } else {
-        dispatch({ type: "SET_FOCUSED_PANE", pane: 3 });
+        dispatch({ type: "SET_FOCUSED_PANE", pane: lastKey });
+        return true;
       }
-      return true;
+      if (state.focusedPane === lastKey) {
+        dispatch({ type: "SET_FOCUSED_PANE", pane: 3 });
+        return true;
+      }
+      return false;
     }
 
     if (key.name === "q" && !state.commandOpen) {
