@@ -76,10 +76,10 @@ export function KeySelect() {
     <box
       flexGrow={1}
       flexDirection="column"
-      backgroundColor={state.focusedPane === 1 && !state.commandOpen ? colors.pane.background : undefined}
+      backgroundColor={state.focusedPane === 1 ? colors.pane.background : undefined}
       padding={1}
     >
-      <text fg={state.focusedPane === 1 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
+      <text fg={state.focusedPane === 1 ? colors.pane.title.focused : colors.pane.title.unfocused}>
         {`Primary Key (${hashKey})`}
       </text>
       <box height={1} />
@@ -90,7 +90,7 @@ export function KeySelect() {
           options={options}
           selectedIndex={selectedIdx >= 0 ? selectedIdx : 0}
           onChange={handleChange}
-          focused={state.focusedPane === 1 && !state.commandOpen}
+          focused={state.focusedPane === 1}
           height={10}
           itemSpacing={0}
           showDescription={false}

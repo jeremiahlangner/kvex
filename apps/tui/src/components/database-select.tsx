@@ -74,10 +74,10 @@ export function DatabaseSelect() {
     <box
       flexGrow={1}
       flexDirection="column"
-      backgroundColor={state.focusedPane === 0 && !state.commandOpen ? colors.pane.background : undefined}
+      backgroundColor={state.focusedPane === 0 ? colors.pane.background : undefined}
       padding={1}
     >
-      <text fg={state.focusedPane === 0 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
+      <text fg={state.focusedPane === 0 ? colors.pane.title.focused : colors.pane.title.unfocused}>
         {label}
       </text>
       <box height={1} />
@@ -88,7 +88,7 @@ export function DatabaseSelect() {
           options={tableOptions}
           selectedIndex={selectedTableIndex >= 0 ? selectedTableIndex : 0}
           onChange={handleTableChange}
-          focused={state.focusedPane === 0 && !state.commandOpen}
+          focused={state.focusedPane === 0}
           height={state.tables.length}
           itemSpacing={0}
           showDescription={false}
