@@ -137,23 +137,22 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       flexDirection="column"
       backgroundColor={colors.pane.background}
     >
-      <box height={3} flexDirection="column" paddingLeft={2}>
-        {suggestions.slice(selectedIndex, selectedIndex + 3).map((s, i) => (
-          <box
-            key={s.name}
-            flexDirection="row"
-            width="100%"
-            backgroundColor={i === 0 ? colors.palette.suggestion.bg : undefined}
-          >
-            <text fg={i === 0 ? colors.palette.suggestion.selected : colors.palette.suggestion.unselected}>
-              {s.name}
-            </text>
-            <text fg={i === 0 ? colors.palette.description.selected : colors.palette.description.unselected}>
-              {"  "}{s.description}
-            </text>
-          </box>
-        ))}
-      </box>
+      <select
+        options={suggestions.map(s => ({ name: `${s.name}  ${s.description}`, description: "" }))}
+        selectedIndex={suggestions.length > 0 ? selectedIndex : 0}
+        height={3}
+        focused={true}
+        showScrollIndicator={true}
+        showDescription={false}
+        showSelectionIndicator={false}
+        itemSpacing={0}
+        textColor={colors.palette.suggestion.unselected}
+        focusedTextColor={colors.palette.suggestion.unselected}
+        backgroundColor="transparent"
+        focusedBackgroundColor="transparent"
+        selectedBackgroundColor={colors.palette.suggestion.bg}
+        selectedTextColor={colors.palette.suggestion.selected}
+      />
       <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
         <text fg={colors.palette.prompt}>/</text>
         {splitMode ? (
