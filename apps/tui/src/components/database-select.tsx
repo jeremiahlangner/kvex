@@ -74,10 +74,11 @@ export function DatabaseSelect() {
       flexGrow={1}
       flexDirection="column"
       backgroundColor={state.focusedPane === 0 && !state.commandOpen ? colors.pane.background : undefined}
-      title={label}
-      titleColor={state.focusedPane === 0 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
+      <text fg={state.focusedPane === 0 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
+        {label}
+      </text>
       {state.tablesLoading ? (
         <text fg={colors.pane.loading}>Loading...</text>
       ) : (

@@ -76,10 +76,11 @@ export function KeySelect() {
       flexGrow={1}
       flexDirection="column"
       backgroundColor={state.focusedPane === 1 && !state.commandOpen ? colors.pane.background : undefined}
-      title={`Primary Key (${hashKey})`}
-      titleColor={state.focusedPane === 1 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}
       padding={1}
     >
+      <text fg={state.focusedPane === 1 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
+        {`Primary Key (${hashKey})`}
+      </text>
       {state.primaryKeyLoading ? (
         <text fg={colors.pane.loading}>Loading...</text>
       ) : (
