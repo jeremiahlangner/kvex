@@ -33,9 +33,8 @@ function AppInner() {
     }
 
     if (key.name === "b" && !state.commandOpen) {
-      const maxPane = 3;
-      const prev = (state.focusedPane - 1 + maxPane + 1) % (maxPane + 1);
-      dispatch({ type: "SET_FOCUSED_PANE", pane: prev });
+      if (state.focusedPane === 0) return true;
+      dispatch({ type: "SET_FOCUSED_PANE", pane: state.focusedPane - 1 });
       return true;
     }
 

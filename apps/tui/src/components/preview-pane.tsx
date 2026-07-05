@@ -13,6 +13,10 @@ export function PreviewPane() {
   const syntaxStyle = useMemo(() => getSyntaxStyle(colors), [colors]);
   const onChunks = useMemo(() => createOnChunks(colors), [colors]);
 
+  const keyLabel = state.previewKey
+    ? Object.values(state.previewKey).join(" / ")
+    : state.primaryKeyValue ?? "";
+
   const jsonContent = state.previewLoading
     ? "Loading..."
     : state.previewItem
@@ -28,7 +32,7 @@ export function PreviewPane() {
     >
       <box flexDirection="row" justifyContent="center">
         <text fg={state.focusedPane === 3 ? colors.pane.title.focused : colors.pane.title.unfocused}>
-          Preview
+          {keyLabel ? `Preview — ${keyLabel}` : "Preview"}
         </text>
       </box>
       <box height={1} />
