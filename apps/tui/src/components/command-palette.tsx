@@ -132,12 +132,12 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
 
   return (
     <box
-      height={8}
+      height={6}
       width="100%"
       flexDirection="column"
       backgroundColor={colors.pane.background}
     >
-      <box height={5} flexDirection="column" paddingLeft={2}>
+      <box height={3} flexDirection="column" paddingLeft={2}>
         {suggestions.slice(selectedIndex, selectedIndex + 3).map((s, i) => (
           <box
             key={s.name}
