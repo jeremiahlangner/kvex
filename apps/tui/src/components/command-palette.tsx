@@ -182,15 +182,15 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
         <text fg={colors.palette.prompt}>/</text>
         {splitMode ? (
           <box flexDirection="row">
-            <text fg={colors.palette.text.command}>{cmdName}</text>
-            <text fg={colors.palette.text.command}> </text>
+            <text fg={colors.palette.prompt}>{cmdName}</text>
+            <text> </text>
             <text>
               {inputPart}
               <span attributes={16}>{cursorVisible ? "█" : " "}</span>
             </text>
           </box>
         ) : (
-          <text fg={isKnownCommand ? colors.palette.text.command : undefined}>
+          <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
             {state.commandBuffer}
             <span attributes={16}>{cursorVisible ? "█" : " "}</span>
           </text>
