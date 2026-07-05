@@ -52,6 +52,7 @@ export function SortKeySelect() {
   return (
     <box
       flexGrow={1}
+      flexBasis={0}
       flexDirection="column"
       backgroundColor={state.focusedPane === 2 ? colors.pane.background : undefined}
       padding={1}
