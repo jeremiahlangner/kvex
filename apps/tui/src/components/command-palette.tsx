@@ -142,17 +142,9 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     return false;
   });
 
-  if (!state.commandOpen) {
-    return (
-      <box height={1} width="100%" flexDirection="row" alignItems="center" paddingLeft={1}>
-        <text fg={colors.palette.hint}>Press '/' for commands</text>
-      </box>
-    );
-  }
-
   return (
     <box
-      height={paletteHeight}
+      height={state.commandOpen ? paletteHeight : 1}
       width="100%"
       flexDirection="column"
       backgroundColor={colors.pane.background}
@@ -160,42 +152,50 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       border={["left"]}
       borderColor={colors.palette.prompt}
     >
-      {reversedSuggestions.length > 0 && (
-        <select
-          options={reversedSuggestions.map(s => ({ name: s.description ? `/${s.name}  ${s.description}` : s.name, description: "" }))}
-          selectedIndex={selectedIndex}
-          height={suggestionHeight}
-          focused={true}
-          showScrollIndicator={true}
-          showDescription={false}
-          showSelectionIndicator={false}
-          itemSpacing={0}
-          textColor={colors.palette.suggestion.unselected}
-          focusedTextColor={colors.palette.suggestion.unselected}
-          backgroundColor="transparent"
-          focusedBackgroundColor="transparent"
-          selectedBackgroundColor={colors.palette.suggestion.bg}
-          selectedTextColor={colors.palette.suggestion.selected}
-        />
-      )}
-      <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-        <text fg={colors.palette.prompt}>/</text>
-        {splitMode ? (
-          <box flexDirection="row">
-            <text fg={colors.palette.prompt}>{cmdName}</text>
-            <text> </text>
-            <text>
-              {inputPart}
-              <span attributes={16}>{cursorVisible ? "█" : " "}</span>
-            </text>
+      {!state.commandOpen ? (
+        <box height={1} flexDirection="row" alignItems="center" paddingLeft={1}>
+          <text fg={colors.palette.hint}>Press '/' for commands</text>
+        </box>
+      ) : (
+        <>
+          {reversedSuggestions.length > 0 && (
+            <select
+              options={reversedSuggestions.map(s => ({ name: s.description ? `/${s.name}  ${s.description}` : s.name, description: "" }))}
+              selectedIndex={selectedIndex}
+              height={suggestionHeight}
+              focused={true}
+              showScrollIndicator={true}
+              showDescription={false}
+              showSelectionIndicator={false}
+              itemSpacing={0}
+              textColor={colors.palette.suggestion.unselected}
+              focusedTextColor={colors.palette.suggestion.unselected}
+              backgroundColor="transparent"
+              focusedBackgroundColor="transparent"
+              selectedBackgroundColor={colors.palette.suggestion.bg}
+              selectedTextColor={colors.palette.suggestion.selected}
+            />
+          )}
+          <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
+            <text fg={colors.palette.prompt}>/</text>
+            {splitMode ? (
+              <box flexDirection="row">
+                <text fg={colors.palette.prompt}>{cmdName}</text>
+                <text> </text>
+                <text>
+                  {inputPart}
+                  <span attributes={16}>{cursorVisible ? "█" : " "}</span>
+                </text>
+              </box>
+            ) : (
+              <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
+                {state.commandBuffer}
+                <span attributes={16}>{cursorVisible ? "█" : " "}</span>
+              </text>
+            )}
           </box>
-        ) : (
-          <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
-            {state.commandBuffer}
-            <span attributes={16}>{cursorVisible ? "█" : " "}</span>
-          </text>
-        )}
-      </box>
+        </>
+      )}
     </box>
   );
 }
