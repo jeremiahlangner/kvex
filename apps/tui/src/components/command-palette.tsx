@@ -27,6 +27,9 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     return parseCommand(cmdName) !== null;
   }, [cmdName]);
 
+  const suggestionHeight = Math.min(7, Math.max(1, reversedSuggestions.length));
+  const paletteHeight = suggestionHeight + 3;
+
   const splitMode = isKnownCommand && firstSpaceIdx >= 0;
   const inputPart = splitMode ? state.commandBuffer.slice(firstSpaceIdx + 1) : "";
 
@@ -135,7 +138,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
 
   return (
     <box
-      height={10}
+      height={paletteHeight}
       width="100%"
       flexDirection="column"
       backgroundColor={colors.pane.background}
@@ -143,7 +146,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       <select
         options={reversedSuggestions.map(s => ({ name: `${s.name}  ${s.description}`, description: "" }))}
         selectedIndex={reversedSuggestions.length > 0 ? selectedIndex : 0}
-        height={7}
+        height={suggestionHeight}
         focused={true}
         showScrollIndicator={true}
         showDescription={false}
