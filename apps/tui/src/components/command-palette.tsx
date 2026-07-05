@@ -156,6 +156,9 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       width="100%"
       flexDirection="column"
       backgroundColor={colors.pane.background}
+      borderStyle="heavy"
+      border={["left"]}
+      borderColor={colors.palette.prompt}
     >
       {reversedSuggestions.length > 0 && (
         <select
