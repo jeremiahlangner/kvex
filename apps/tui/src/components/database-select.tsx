@@ -79,6 +79,7 @@ export function DatabaseSelect() {
       <text fg={state.focusedPane === 0 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
         {label}
       </text>
+      <box height={1} />
       {state.tablesLoading ? (
         <text fg={colors.pane.loading}>Loading...</text>
       ) : (

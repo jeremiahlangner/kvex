@@ -81,6 +81,7 @@ export function KeySelect() {
       <text fg={state.focusedPane === 1 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
         {`Primary Key (${hashKey})`}
       </text>
+      <box height={1} />
       {state.primaryKeyLoading ? (
         <text fg={colors.pane.loading}>Loading...</text>
       ) : (

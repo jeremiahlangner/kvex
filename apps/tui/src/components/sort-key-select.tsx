@@ -58,6 +58,7 @@ export function SortKeySelect() {
       <text fg={state.focusedPane === 2 && !state.commandOpen ? colors.pane.title.focused : colors.pane.title.unfocused}>
         {`Sort Key (${range})`}
       </text>
+      <box height={1} />
       {state.sortKeyLoading ? (
         <text fg={colors.pane.loading}>Loading...</text>
       ) : (
