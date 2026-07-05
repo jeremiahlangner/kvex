@@ -8,7 +8,7 @@ import {
   type ConnectionStatus,
   DEFAULT_CONFIG,
 } from "./providers/types";
-import { MockProvider } from "./providers/mock-provider";
+import { LocalProvider } from "./providers/local-provider";
 
 export interface AppState {
   config: KvexConfig;
@@ -65,9 +65,9 @@ export type AppAction =
 
 export const initialState: AppState = {
   config: DEFAULT_CONFIG,
-  provider: new MockProvider(),
+  provider: new LocalProvider(),
   connectionStatus: "disconnected",
-  activeProviderType: "mock",
+  activeProviderType: "local",
   tables: [],
   selectedTable: null,
   tableSchema: null,

@@ -1,4 +1,4 @@
-export type ProviderType = "mock" | "dynamodb" | "cloudflare-kv";
+export type ProviderType = "local" | "dynamodb" | "cloudflare-kv";
 
 export interface KeySchema {
   hash: string;
@@ -31,7 +31,7 @@ export interface KvexConfig {
 
 export const DEFAULT_CONFIG: KvexConfig = {
   editor: "vim",
-  activeProvider: "mock",
+  activeProvider: "local",
   theme: "default",
 };
 
@@ -52,10 +52,39 @@ export interface CachedObject {
 
 export type ConnectionStatus = "disconnected" | "connecting" | "connected" | "error";
 
+export type ConnectivityState = "local" | "online" | "offline";
+
+export interface ProviderInfo {
+  name: string;
+  type: ProviderType;
+  description: string;
+  pingEndpoint: string;
+  isLocal: boolean;
+  dbName: string;
+  collectionLabel: string;
+  connectionLabel: string;
+}
+
 export function getCollectionLabel(type: ProviderType): string {
   switch (type) {
     case "dynamodb": return "Table";
     case "cloudflare-kv": return "Namespace";
     default: return "Database";
+  }
+}
+
+export function getPingEndpoint(type: ProviderType): string {
+  switch (type) {
+    case "dynamodb": return "https://dynamodb.us-east-1.amazonaws.com";
+    case "cloudflare-kv": return "https://1.1.1.1";
+    default: return "";
+  }
+}
+
+export function getConnectionLabel(type: ProviderType): string {
+  switch (type) {
+    case "dynamodb": return "AWS";
+    case "cloudflare-kv": return "Cloudflare";
+    default: return "Local";
   }
 }
