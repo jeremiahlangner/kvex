@@ -34,7 +34,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
     return parseCommand(cmdName) !== null;
   }, [cmdName]);
 
-  const suggestionHeight = Math.min(7, Math.max(1, reversedSuggestions.length));
+  const suggestionHeight = reversedSuggestions.length > 0 ? Math.min(7, reversedSuggestions.length) : 0;
   const paletteHeight = suggestionHeight + 3;
 
   const splitMode = isKnownCommand && firstSpaceIdx >= 0;
@@ -157,22 +157,24 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       flexDirection="column"
       backgroundColor={colors.pane.background}
     >
-      <select
-        options={reversedSuggestions.map(s => ({ name: s.description ? `/${s.name}  ${s.description}` : s.name, description: "" }))}
-        selectedIndex={reversedSuggestions.length > 0 ? selectedIndex : 0}
-        height={suggestionHeight}
-        focused={true}
-        showScrollIndicator={true}
-        showDescription={false}
-        showSelectionIndicator={false}
-        itemSpacing={0}
-        textColor={colors.palette.suggestion.unselected}
-        focusedTextColor={colors.palette.suggestion.unselected}
-        backgroundColor="transparent"
-        focusedBackgroundColor="transparent"
-        selectedBackgroundColor={colors.palette.suggestion.bg}
-        selectedTextColor={colors.palette.suggestion.selected}
-      />
+      {reversedSuggestions.length > 0 && (
+        <select
+          options={reversedSuggestions.map(s => ({ name: s.description ? `/${s.name}  ${s.description}` : s.name, description: "" }))}
+          selectedIndex={selectedIndex}
+          height={suggestionHeight}
+          focused={true}
+          showScrollIndicator={true}
+          showDescription={false}
+          showSelectionIndicator={false}
+          itemSpacing={0}
+          textColor={colors.palette.suggestion.unselected}
+          focusedTextColor={colors.palette.suggestion.unselected}
+          backgroundColor="transparent"
+          focusedBackgroundColor="transparent"
+          selectedBackgroundColor={colors.palette.suggestion.bg}
+          selectedTextColor={colors.palette.suggestion.selected}
+        />
+      )}
       <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
         <text fg={colors.palette.prompt}>/</text>
         {splitMode ? (
