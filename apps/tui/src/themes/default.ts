@@ -11,30 +11,18 @@ export const theme: ThemeColors = {
   },
 
   palette: {
-    background: "#1a1a3e",
-    border: "#6666FF",
     prompt: "#6666FF",
-    text: {
-      command: "#6666FF",
-      default: "#CCCCCC",
-    },
     suggestion: {
       selected: "#FFFFFF",
       unselected: "#555577",
       bg: "#2a2a5e",
-    },
-    description: {
-      selected: "#AAAAAA",
-      unselected: "#444466",
     },
     hint: "#555577",
   },
 
   confirm: {
     background: "#1a1a3e",
-    accent: "#6666FF",
     message: "#FFFFFF",
-    hint: "#AAAAAA",
   },
 
   explorer: {
@@ -46,7 +34,6 @@ export const theme: ThemeColors = {
     connected: "#00FF00",
     error: "#FF0000",
     warning: "#FFFF00",
-    hint: "#888888",
   },
 
   syntax: {

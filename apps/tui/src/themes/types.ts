@@ -5,19 +5,13 @@ export interface ThemeColors {
     loading: string;
   };
   palette: {
-    background: string;
-    border: string;
     prompt: string;
-    text: { command: string; default: string };
     suggestion: { selected: string; unselected: string; bg: string };
-    description: { selected: string; unselected: string };
     hint: string;
   };
   confirm: {
     background: string;
-    accent: string;
     message: string;
-    hint: string;
   };
   explorer: {
     selectedBg: string;
@@ -27,7 +21,6 @@ export interface ThemeColors {
     connected: string;
     error: string;
     warning: string;
-    hint: string;
   };
   syntax: {
     default: string;
