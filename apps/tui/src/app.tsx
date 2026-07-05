@@ -46,11 +46,12 @@ function AppInner() {
         dispatch({ type: "SET_FOCUSED_PANE", pane: lastKey });
         return true;
       }
-      if (state.focusedPane === lastKey) {
-        dispatch({ type: "SET_FOCUSED_PANE", pane: 3 });
+      if (state.focusedPane < lastKey) {
+        dispatch({ type: "SET_FOCUSED_PANE", pane: state.focusedPane + 1 });
         return true;
       }
-      return false;
+      dispatch({ type: "SET_FOCUSED_PANE", pane: 3 });
+      return true;
     }
 
     if (key.name === "q" && !state.commandOpen) {
