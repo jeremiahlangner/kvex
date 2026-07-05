@@ -136,9 +136,6 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       width="100%"
       flexDirection="column"
       backgroundColor={colors.explorer.selectedBg}
-      borderStyle="heavy"
-      border={["left"]}
-      borderColor={colors.palette.border}
     >
       <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
         <text fg={colors.palette.prompt}>/</text>
