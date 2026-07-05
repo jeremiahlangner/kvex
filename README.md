@@ -1,4 +1,4 @@
-# kvex
+# kvex (/ˈkæv.ɛks/ — "CAVE-ex")
 
 TUI key-value explorer for NoSQL cloud databases. Browse, preview, edit, and
 search objects across DynamoDB, Cloudflare KV, and local SQLite backends.
