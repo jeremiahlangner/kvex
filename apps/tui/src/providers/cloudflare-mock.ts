@@ -1,9 +1,10 @@
 import type { DatabaseProvider, KeySchema, ProviderType, TableInfo } from "./types";
 import { SqliteDatabase } from "./db/sqlite-provider";
+import { getProviderDbPath } from "./registry";
 
 export class CloudflareMockProvider implements DatabaseProvider {
   readonly type: ProviderType = "cloudflare-kv";
-  private db = new SqliteDatabase("cloudflare-mock");
+  private db = new SqliteDatabase(getProviderDbPath("cloudflare-kv"));
 
   async connect(): Promise<void> {
     await this.db.open();

@@ -1,17 +1,16 @@
 import { Database } from "bun:sqlite";
 import { type KeySchema, type TableInfo } from "../types";
-import { getProviderDbPath } from "../registry";
 
 export class SqliteDatabase {
   private db: Database | null = null;
-  readonly type: string;
+  private dbPath: string;
 
-  constructor(type: string) {
-    this.type = type;
+  constructor(dbPath: string) {
+    this.dbPath = dbPath;
   }
 
   async open(): Promise<void> {
-    const path = getProviderDbPath(this.type as any);
+    const path = this.dbPath;
     const dir = path.substring(0, path.lastIndexOf("/"));
     const fs = await import("node:fs");
     if (!fs.existsSync(dir)) {

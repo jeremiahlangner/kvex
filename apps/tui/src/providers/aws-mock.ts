@@ -1,9 +1,10 @@
 import type { DatabaseProvider, KeySchema, ProviderType, TableInfo } from "./types";
 import { SqliteDatabase } from "./db/sqlite-provider";
+import { getProviderDbPath } from "./registry";
 
 export class AwsMockProvider implements DatabaseProvider {
   readonly type: ProviderType = "dynamodb";
-  private db = new SqliteDatabase("aws-mock");
+  private db = new SqliteDatabase(getProviderDbPath("dynamodb"));
 
   async connect(): Promise<void> {
     await this.db.open();

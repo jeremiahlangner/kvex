@@ -1,9 +1,10 @@
 import type { DatabaseProvider, KeySchema, ProviderType, TableInfo } from "./types";
 import { SqliteDatabase } from "./db/sqlite-provider";
+import { getProviderDbPath } from "./registry";
 
 export class LocalProvider implements DatabaseProvider {
   readonly type: ProviderType = "local";
-  private db = new SqliteDatabase("local");
+  private db = new SqliteDatabase(getProviderDbPath("local"));
 
   async connect(): Promise<void> {
     await this.db.open();

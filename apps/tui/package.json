@@ -9,11 +9,16 @@
     "dev": "bun --watch src/index.tsx",
     "build": "bun build src/index.tsx --outdir dist",
     "lint": "tsc --noEmit",
+    "test": "bun test",
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1079.0",
+    "@aws-sdk/lib-dynamodb": "^3.1079.0",
+    "@aws-sdk/util-dynamodb": "^3.996.5",
     "@opentui/core": "^0.4.3",
     "@opentui/react": "^0.4.3",
+    "cloudflare": "^6.5.0",
     "minisearch": "^7.2.0",
     "react": "^19.2.7"
   },
