@@ -135,45 +135,38 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme }: Co
       height={8}
       width="100%"
       flexDirection="column"
-      borderStyle="heavy"
-      border={["left"]}
-      borderColor={colors.palette.border}
+      backgroundColor={colors.pane.background}
     >
-      <box
-        flexDirection="column"
-        backgroundColor={colors.pane.background}
-      >
-        <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-          <text fg={colors.palette.prompt}>/</text>
-          {splitMode ? (
-            <box flexDirection="row">
-              <text fg={colors.palette.text.command}>{cmdName}</text>
-              <text fg={colors.palette.text.command}> </text>
-              <text>{inputPart}</text>
-            </box>
-          ) : (
-            <text fg={isKnownCommand ? colors.palette.text.command : undefined}>
-              {state.commandBuffer}
+      <box height={5} flexDirection="column" paddingLeft={2}>
+        {suggestions.slice(selectedIndex, selectedIndex + 3).map((s, i) => (
+          <box
+            key={s.name}
+            flexDirection="row"
+            width="100%"
+            backgroundColor={i === 0 ? colors.palette.suggestion.bg : undefined}
+          >
+            <text fg={i === 0 ? colors.palette.suggestion.selected : colors.palette.suggestion.unselected}>
+              {s.name}
             </text>
-          )}
-        </box>
-        <box height={5} flexDirection="column" paddingLeft={2}>
-          {suggestions.slice(selectedIndex, selectedIndex + 3).map((s, i) => (
-            <box
-              key={s.name}
-              flexDirection="row"
-              width="100%"
-              backgroundColor={i === 0 ? colors.palette.suggestion.bg : undefined}
-            >
-              <text fg={i === 0 ? colors.palette.suggestion.selected : colors.palette.suggestion.unselected}>
-                {s.name}
-              </text>
-              <text fg={i === 0 ? colors.palette.description.selected : colors.palette.description.unselected}>
-                {"  "}{s.description}
-              </text>
-            </box>
-          ))}
-        </box>
+            <text fg={i === 0 ? colors.palette.description.selected : colors.palette.description.unselected}>
+              {"  "}{s.description}
+            </text>
+          </box>
+        ))}
+      </box>
+      <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
+        <text fg={colors.palette.prompt}>/</text>
+        {splitMode ? (
+          <box flexDirection="row">
+            <text fg={colors.palette.text.command}>{cmdName}</text>
+            <text fg={colors.palette.text.command}> </text>
+            <text>{inputPart}</text>
+          </box>
+        ) : (
+          <text fg={isKnownCommand ? colors.palette.text.command : undefined}>
+            {state.commandBuffer}
+          </text>
+        )}
       </box>
     </box>
   );

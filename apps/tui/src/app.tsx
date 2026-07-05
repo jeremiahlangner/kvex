@@ -170,6 +170,7 @@ function AppInner() {
         <KeySelect />
         <SortKeySelect />
       </box>
+      <box height={1} />
       <CommandPalette
         onQuit={handleQuit}
         onSearch={handleSearch}
