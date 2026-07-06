@@ -1,7 +1,7 @@
 import { useAppState } from "../state";
 import { getSuggestions, parseCommand } from "../utils/commands";
 import { useKeyboard } from "@opentui/react";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../themes";
 
 interface CommandPaletteProps {
@@ -25,17 +25,13 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
   }, [state.commandOpen]);
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
-  const reversedSuggestions = useMemo(() => suggestions.slice().reverse(), [suggestions]);
 
   const firstSpaceIdx = state.commandBuffer.indexOf(" ");
   const cmdName = firstSpaceIdx >= 0 ? state.commandBuffer.slice(0, firstSpaceIdx) : state.commandBuffer;
 
-  const isKnownCommand = useMemo(() => {
-    if (!cmdName) return false;
-    return parseCommand(cmdName) !== null;
-  }, [cmdName]);
+  const isKnownCommand = cmdName && parseCommand(cmdName) !== null;
 
-  const suggestionHeight = reversedSuggestions.length > 0 ? Math.min(7, reversedSuggestions.length) : 0;
+  const suggestionHeight = suggestions.length > 0 ? Math.min(7, suggestions.length) : 0;
   const paletteHeight = suggestionHeight + 3;
 
   const splitMode = isKnownCommand && firstSpaceIdx >= 0;
@@ -75,7 +71,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
     }
   };
 
-  const resetIndex = () => setSelectedIndex(Math.max(0, reversedSuggestions.length - 1));
+  const resetIndex = () => setSelectedIndex(0);
 
   const closePalette = () => {
     dispatch({ type: "SET_COMMAND_OPEN", open: false });
@@ -96,20 +92,20 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       return true;
     }
     if (key.name === "up") {
-      if (reversedSuggestions.length > 0) {
-        setSelectedIndex((prev) => (prev - 1 + reversedSuggestions.length) % reversedSuggestions.length);
+      if (suggestions.length > 0) {
+        setSelectedIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
       }
       return true;
     }
     if (key.name === "down") {
-      if (reversedSuggestions.length > 0) {
-        setSelectedIndex((prev) => (prev + 1) % reversedSuggestions.length);
+      if (suggestions.length > 0) {
+        setSelectedIndex((prev) => (prev + 1) % suggestions.length);
       }
       return true;
     }
     if (key.name === "tab") {
-      if (reversedSuggestions.length > 0) {
-        const suggestion = reversedSuggestions[selectedIndex].name;
+      if (suggestions.length > 0) {
+        const suggestion = suggestions[selectedIndex].name;
         if (splitMode) {
           dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
         } else {
@@ -163,18 +159,16 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
         </box>
       ) : (
         <>
-          {reversedSuggestions.length > 0 && (
+          {suggestions.length > 0 && (
             <select
-              options={reversedSuggestions.map(s => ({ name: s.description ? `/${s.name}  ${s.description}` : s.name, description: "" }))}
+              options={suggestions.map(s => ({ name: `${s.name}  ${s.description}`, description: "" }))}
               selectedIndex={selectedIndex}
               height={suggestionHeight}
-              focused={true}
+              keyBindings={[]}
               showScrollIndicator={true}
               showDescription={false}
               showSelectionIndicator={false}
               itemSpacing={0}
-              textColor={colors.palette.suggestion.unselected}
-              focusedTextColor={colors.palette.suggestion.unselected}
               backgroundColor="transparent"
               focusedBackgroundColor="transparent"
               selectedBackgroundColor={colors.palette.suggestion.bg}
@@ -187,15 +181,15 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
               <box flexDirection="row">
                 <text fg={colors.palette.prompt}>{cmdName}</text>
                 <text> </text>
-                <text>
+                <text fg={colors.palette.hint}>
                   {inputPart}
-                  <span attributes={16}>{cursorVisible ? "█" : " "}</span>
+                  <span fg={colors.palette.suggestion.bg} bg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
                 {state.commandBuffer}
-                <span attributes={16}>{cursorVisible ? "█" : " "}</span>
+                <span fg={colors.palette.suggestion.bg} bg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
               </text>
             )}
           </box>
