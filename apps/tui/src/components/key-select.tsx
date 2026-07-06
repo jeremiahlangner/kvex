@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { cache } from "../cache";
+import { getKeyLabel } from "../providers/types";
 import { ExplorerPane } from "./explorer-pane";
 
 export function KeySelect() {
@@ -74,7 +75,7 @@ export function KeySelect() {
   return (
     <ExplorerPane
       focused={state.focusedPane === 1}
-      title={`Primary Key (${hashKey})`}
+      title={getKeyLabel(state.activeProviderType, hashKey)}
       loading={state.primaryKeyLoading}
       options={options}
       selectedIndex={selectedIdx}

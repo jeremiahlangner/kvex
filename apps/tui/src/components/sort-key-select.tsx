@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { cache } from "../cache";
+import { getSortKeyLabel } from "../providers/types";
 import { ExplorerPane } from "./explorer-pane";
 
 export function SortKeySelect() {
@@ -51,7 +52,7 @@ export function SortKeySelect() {
   return (
     <ExplorerPane
       focused={state.focusedPane === 2}
-      title={`Sort Key (${range})`}
+      title={getSortKeyLabel(state.activeProviderType, range)}
       loading={state.sortKeyLoading}
       options={options}
       selectedIndex={selectedIdx}

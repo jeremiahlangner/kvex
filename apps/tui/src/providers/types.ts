@@ -88,3 +88,12 @@ export function getConnectionLabel(type: ProviderType): string {
     default: return "Local";
   }
 }
+
+export function getKeyLabel(type: ProviderType, hashKey: string): string {
+  if (type === "cloudflare-kv") return "Key";
+  return `Primary Key (${hashKey})`;
+}
+
+export function getSortKeyLabel(_type: ProviderType, rangeKey: string): string {
+  return `Sort Key (${rangeKey})`;
+}
