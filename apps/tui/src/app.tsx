@@ -45,8 +45,9 @@ function AppInner() {
       if (state.tableSchema?.range) validPanes.push(2);
       validPanes.push(3);
       const idx = validPanes.indexOf(state.focusedPane);
-      const next = validPanes[(idx + 1) % validPanes.length];
-      dispatch({ type: "SET_FOCUSED_PANE", pane: next });
+      if (idx < validPanes.length - 1) {
+        dispatch({ type: "SET_FOCUSED_PANE", pane: validPanes[idx + 1] });
+      }
       return true;
     }
 
