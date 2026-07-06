@@ -36,11 +36,11 @@ export function ConfirmDialog() {
       else handleNo();
       return true;
     }
-    if (key.name === "left" || key.name === "h") {
+    if (key.name === "left" || key.name === "h" || key.name === "b") {
       setSelected("yes");
       return true;
     }
-    if (key.name === "right" || key.name === "l" || key.name === "j" || key.name === "k") {
+    if (key.name === "right" || key.name === "l" || key.name === "w" || key.name === "j" || key.name === "k") {
       setSelected("no");
       return true;
     }
