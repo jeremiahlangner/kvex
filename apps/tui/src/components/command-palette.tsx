@@ -202,15 +202,15 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
               <box flexDirection="row">
                 <text fg={colors.palette.prompt}>{cmdName}</text>
                 <text> </text>
-                <text fg={colors.palette.hint}>
+                <text fg={colors.palette.prompt}>
                   {inputPart}
-                  <span fg={colors.palette.suggestion.bg} bg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
+                  <span fg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.palette.suggestion.bg} bg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
+                <span fg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
               </text>
             )}
           </box>
