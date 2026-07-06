@@ -29,11 +29,7 @@ export function PreviewPane() {
     ? Object.values(state.previewKey).join(" / ")
     : state.primaryKeyValue ?? "";
 
-  const jsonContent = state.previewLoading
-    ? "Loading..."
-    : state.previewItem
-      ? JSON.stringify(state.previewItem, null, 2)
-      : "Select an item to preview...";
+  const showCode = state.previewLoading || state.previewItem;
 
   return (
     <box
@@ -49,13 +45,17 @@ export function PreviewPane() {
       </box>
       <box height={1} />
       <box flexGrow={1}>
-        <code
-          content={jsonContent}
-          filetype="json"
-          syntaxStyle={syntaxStyle}
-          onChunks={onChunks}
-          width="100%"
-        />
+        {showCode ? (
+          <code
+            content={state.previewLoading ? "Loading..." : JSON.stringify(state.previewItem, null, 2)}
+            filetype="json"
+            syntaxStyle={syntaxStyle}
+            onChunks={onChunks}
+            width="100%"
+          />
+        ) : (
+          <text fg={colors.palette.hint}>Select an item to preview...</text>
+        )}
       </box>
       {lastUpdatedText && (
         <box flexDirection="row" justifyContent="flex-end">
