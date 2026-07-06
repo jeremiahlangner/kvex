@@ -51,7 +51,7 @@ export function SortKeySelect() {
 
   return (
     <ExplorerPane
-      focused={state.focusedPane === 2}
+      focused={state.focusedPane === 2 || state.focusedPane === 3}
       title={getSortKeyLabel(state.activeProviderType, range)}
       loading={state.sortKeyLoading}
       options={options}

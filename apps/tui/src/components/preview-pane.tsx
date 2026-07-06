@@ -19,7 +19,7 @@ export function PreviewPane() {
   }, [state.previewItem]);
 
   const lastUpdatedText = lastUpdated
-    ? `Last updated ${lastUpdated.toTimeString().slice(0, 8)}`
+    ? `Last updated ${lastUpdated.toLocaleDateString()} ${lastUpdated.toTimeString().slice(0, 8)}`
     : null;
 
   const syntaxStyle = useMemo(() => getSyntaxStyle(colors), [colors]);

@@ -74,7 +74,7 @@ export function KeySelect() {
 
   return (
     <ExplorerPane
-      focused={state.focusedPane === 1}
+      focused={state.focusedPane === 1 || (state.focusedPane === 3 && !state.tableSchema?.range)}
       title={getKeyLabel(state.activeProviderType, hashKey)}
       loading={state.primaryKeyLoading}
       options={options}
