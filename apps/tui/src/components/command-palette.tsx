@@ -17,6 +17,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
   const colors = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [cursorVisible, setCursorVisible] = useState(true);
+  const [scrollOffset, setScrollOffset] = useState(0);
 
   useEffect(() => {
     if (!state.commandOpen) return;
@@ -32,6 +33,18 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
   const isKnownCommand = cmdName && parseCommand(cmdName) !== null;
 
   const suggestionHeight = suggestions.length > 0 ? Math.min(7, suggestions.length) : 0;
+
+  useEffect(() => {
+    if (suggestions.length <= suggestionHeight) {
+      setScrollOffset(0);
+      return;
+    }
+    setScrollOffset((prev) => {
+      if (selectedIndex < prev) return selectedIndex;
+      if (selectedIndex >= prev + suggestionHeight) return selectedIndex - suggestionHeight + 1;
+      return prev;
+    });
+  }, [selectedIndex, suggestionHeight, suggestions.length]);
   const paletteHeight = suggestionHeight + 3;
 
   const splitMode = isKnownCommand && firstSpaceIdx >= 0;
@@ -160,20 +173,28 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       ) : (
         <>
           {suggestions.length > 0 && (
-            <select
-              options={suggestions.map(s => ({ name: s.description ? `${s.name}  ${s.description}` : s.name, description: "" }))}
-              selectedIndex={selectedIndex}
-              height={suggestionHeight}
-              keyBindings={[]}
-              showScrollIndicator={true}
-              showDescription={false}
-              showSelectionIndicator={false}
-              itemSpacing={0}
-              backgroundColor="transparent"
-              focusedBackgroundColor="transparent"
-              selectedBackgroundColor={colors.palette.suggestion.bg}
-              selectedTextColor={colors.palette.suggestion.selected}
-            />
+            <box flexDirection="column" height={suggestionHeight}>
+              {suggestions.slice(scrollOffset, scrollOffset + suggestionHeight).map((s, i) => {
+                const isSelected = scrollOffset + i === selectedIndex;
+                return (
+                  <box
+                    key={`${s.name}-${scrollOffset + i}`}
+                    height={1}
+                    flexDirection="row"
+                    backgroundColor={isSelected ? colors.palette.suggestion.bg : undefined}
+                  >
+                    <text fg={isSelected ? colors.palette.suggestion.selected : undefined}>
+                      {s.name}
+                    </text>
+                    {s.description ? (
+                      <text fg={colors.palette.hint}>
+                        {"  "}{s.description}
+                      </text>
+                    ) : null}
+                  </box>
+                );
+              })}
+            </box>
           )}
           <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
             <text fg={colors.palette.prompt}>/</text>
