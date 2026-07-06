@@ -92,7 +92,10 @@ export function getSuggestions(input: string): Suggestion[] {
     const argPrefix = parts.slice(1).join(" ").toLowerCase();
     return getProviderNames()
       .filter((name) => name.toLowerCase().startsWith(argPrefix))
-      .map((name) => ({ name, description: "" }));
+      .map((name) => ({
+        name,
+        description: name === "Local" ? "" : "(Local)",
+      }));
   }
   if (parts.length > 1 && EDITOR_CMDS.includes(cmdPart)) {
     const argPrefix = parts.slice(1).join(" ").toLowerCase();

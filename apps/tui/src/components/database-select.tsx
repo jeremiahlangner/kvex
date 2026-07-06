@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
-import { LocalProvider } from "../providers/local-provider";
-import { type DatabaseProvider, getCollectionLabel } from "../providers/types";
+import { getCollectionLabel } from "../providers/types";
+import { createProvider } from "../providers/factory";
 import { ExplorerPane } from "./explorer-pane";
 
 export function DatabaseSelect() {
@@ -23,11 +23,11 @@ export function DatabaseSelect() {
     dispatch({ type: "SET_CONNECTION_STATUS", status: "connecting" });
     dispatch({ type: "SET_TABLES_LOADING", loading: true });
     try {
-      const provider: DatabaseProvider = new LocalProvider();
+      const provider = createProvider(state.activeProviderType);
       await provider.connect();
       dispatch({ type: "SET_PROVIDER", provider });
       dispatch({ type: "SET_CONNECTION_STATUS", status: "connected" });
-      dispatch({ type: "SET_STATUS", status: "Connected to mock provider" });
+      dispatch({ type: "SET_STATUS", status: "Connected to provider" });
       const tables = await provider.listTables();
       dispatch({ type: "SET_TABLES", tables });
       dispatch({ type: "SET_TABLES_LOADING", loading: false });

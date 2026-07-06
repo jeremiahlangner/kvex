@@ -24,16 +24,17 @@ describe("CloudflareMockProvider", () => {
     expect(p.type).toBe("cloudflare-kv");
   });
 
-  test("listTables returns empty initially", async () => {
+  test("listTables returns seeded mock namespaces", async () => {
     const tables = await p.listTables();
-    expect(tables).toEqual([]);
+    const names = tables.map(t => t.name);
+    expect(names).toEqual(expect.arrayContaining(["app-config", "user-preferences", "session-data"]));
   });
 
   test("putItem creates table and inserts item", async () => {
     await p.putItem(TEST_TABLE, TEST_KEY, TEST_VALUE);
     const tables = await p.listTables();
-    expect(tables.length).toBe(1);
-    expect(tables[0].name).toBe(TEST_TABLE);
+    const names = tables.map(t => t.name);
+    expect(names).toContain(TEST_TABLE);
   });
 
   test("describeTable returns schema", async () => {
