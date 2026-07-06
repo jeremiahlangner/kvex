@@ -8,9 +8,10 @@ interface ExplorerPaneProps {
   selectedIndex: number;
   onChange: (index: number, option: any) => void;
   selectHeight?: number;
+  emptyMessage?: string;
 }
 
-export function ExplorerPane({ focused, title, loading, options, selectedIndex, onChange, selectHeight = 10 }: ExplorerPaneProps) {
+export function ExplorerPane({ focused, title, loading, options, selectedIndex, onChange, selectHeight = 10, emptyMessage = "No items" }: ExplorerPaneProps) {
   const colors = useTheme();
   return (
     <box
@@ -26,6 +27,8 @@ export function ExplorerPane({ focused, title, loading, options, selectedIndex, 
       <box height={1} />
       {loading ? (
         <text fg={colors.pane.loading}>Loading...</text>
+      ) : options.length === 0 ? (
+        <text fg={colors.palette.hint}>{emptyMessage}</text>
       ) : (
         <select
           options={options}

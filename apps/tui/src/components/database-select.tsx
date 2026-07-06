@@ -78,6 +78,7 @@ export function DatabaseSelect() {
       selectedIndex={selectedTableIndex}
       onChange={handleTableChange}
       selectHeight={state.tables.length}
+      emptyMessage={`No ${label.toLowerCase()}s`}
     />
   );
 }

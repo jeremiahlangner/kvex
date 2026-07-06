@@ -80,6 +80,7 @@ export function KeySelect() {
       options={options}
       selectedIndex={selectedIdx}
       onChange={handleChange}
+      emptyMessage="No keys"
     />
   );
 }

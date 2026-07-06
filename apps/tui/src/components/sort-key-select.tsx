@@ -57,6 +57,7 @@ export function SortKeySelect() {
       options={options}
       selectedIndex={selectedIdx}
       onChange={handleChange}
+      emptyMessage="No sort keys"
     />
   );
 }
