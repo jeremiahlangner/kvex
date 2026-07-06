@@ -40,15 +40,25 @@ function AppInner() {
     }
 
     if (key.name === "w" && !state.commandOpen) {
-      const maxPane = 3;
-      const next = (state.focusedPane + 1) % (maxPane + 1);
+      const validPanes = [0];
+      if (state.tableSchema) validPanes.push(1);
+      if (state.tableSchema?.range) validPanes.push(2);
+      validPanes.push(3);
+      const idx = validPanes.indexOf(state.focusedPane);
+      const next = validPanes[(idx + 1) % validPanes.length];
       dispatch({ type: "SET_FOCUSED_PANE", pane: next });
       return true;
     }
 
     if (key.name === "b" && !state.commandOpen) {
-      if (state.focusedPane === 0) return true;
-      dispatch({ type: "SET_FOCUSED_PANE", pane: state.focusedPane - 1 });
+      const validPanes = [0];
+      if (state.tableSchema) validPanes.push(1);
+      if (state.tableSchema?.range) validPanes.push(2);
+      validPanes.push(3);
+      const idx = validPanes.indexOf(state.focusedPane);
+      if (idx > 0) {
+        dispatch({ type: "SET_FOCUSED_PANE", pane: validPanes[idx - 1] });
+      }
       return true;
     }
 
