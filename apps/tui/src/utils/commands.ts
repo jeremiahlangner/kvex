@@ -15,6 +15,9 @@ import { getProviderNames } from "../providers/registry";
 
 const THEME_CMDS = ["theme", "t"];
 const PROVIDER_CMDS = ["provider", "p"];
+const EDITOR_CMDS = ["editor"];
+
+const COMMON_EDITORS = ["vim", "nvim", "neovim", "nano", "emacs", "code", "hx", "helix", "vi", "zed"];
 
 export function getBuiltinCommands(): Command[] {
   return [
@@ -88,6 +91,12 @@ export function getSuggestions(input: string): Suggestion[] {
   if (parts.length > 1 && PROVIDER_CMDS.includes(cmdPart)) {
     const argPrefix = parts.slice(1).join(" ").toLowerCase();
     return getProviderNames()
+      .filter((name) => name.toLowerCase().startsWith(argPrefix))
+      .map((name) => ({ name, description: "" }));
+  }
+  if (parts.length > 1 && EDITOR_CMDS.includes(cmdPart)) {
+    const argPrefix = parts.slice(1).join(" ").toLowerCase();
+    return COMMON_EDITORS
       .filter((name) => name.toLowerCase().startsWith(argPrefix))
       .map((name) => ({ name, description: "" }));
   }
