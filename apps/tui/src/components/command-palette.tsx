@@ -161,20 +161,18 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
         <>
           {suggestions.length > 0 && (
             <select
-              options={suggestions.map(s => ({ name: s.name, description: s.description }))}
+              options={suggestions.map(s => ({ name: s.description ? `${s.name}  ${s.description}` : s.name, description: "" }))}
               selectedIndex={selectedIndex}
               height={suggestionHeight}
               keyBindings={[]}
               showScrollIndicator={true}
+              showDescription={false}
               showSelectionIndicator={false}
               itemSpacing={0}
               backgroundColor="transparent"
               focusedBackgroundColor="transparent"
-              textColor={colors.palette.suggestion.unselected}
-              descriptionColor={colors.palette.hint}
-              selectedTextColor={colors.palette.suggestion.selected}
-              selectedDescriptionColor={colors.palette.hint}
               selectedBackgroundColor={colors.palette.suggestion.bg}
+              selectedTextColor={colors.palette.suggestion.selected}
             />
           )}
           <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
