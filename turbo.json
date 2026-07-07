@@ -1,25 +1,21 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "https://v2-10-4.turborepo.dev/schema.json",
   "ui": "tui",
   "tasks": {
     "dev": {
       "dependsOn": [],
       "cache": false,
-      "persistent": true,
-      "command": ["bun", "--watch", "src/index.tsx"]
+      "persistent": true
     },
     "build": {
       "dependsOn": [],
-      "outputs": ["dist/**"],
-      "command": ["bun", "build", "src/index.tsx", "--outdir", "dist"]
+      "outputs": ["dist/**"]
     },
     "lint": {
-      "dependsOn": [],
-      "command": ["bun", "x", "tsc", "--noEmit"]
+      "dependsOn": []
     },
     "clean": {
-      "cache": false,
-      "command": ["rm", "-rf", "dist", ".turbo"]
+      "cache": false
     }
   }
 }
