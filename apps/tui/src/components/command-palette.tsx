@@ -221,14 +221,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                 <text> </text>
                 <text fg={colors.hint}>
                   {inputPart}
-                  <span fg={colors.hint} attributes={TextAttributes.BLINK}>█</span>
+                  <span fg={colors.text} attributes={TextAttributes.BLINK}>█</span>
                   {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.hint : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.hint} attributes={TextAttributes.BLINK}>█</span>
+                <span fg={colors.text} attributes={TextAttributes.BLINK}>█</span>
                 {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
               </text>
             )}
