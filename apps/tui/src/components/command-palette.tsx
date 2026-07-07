@@ -16,14 +16,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
   const { state, dispatch } = useAppState();
   const colors = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [cursorVisible, setCursorVisible] = useState(true);
   const [scrollOffset, setScrollOffset] = useState(0);
-
-  useEffect(() => {
-    if (!state.commandOpen) return;
-    const id = setInterval(() => setCursorVisible(v => !v), 530);
-    return () => clearInterval(id);
-  }, [state.commandOpen]);
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
 
@@ -206,7 +199,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                     flexDirection="row"
                     backgroundColor={isSelected ? colors.palette.suggestion.bg : undefined}
                   >
-                    <text fg={isSelected ? colors.palette.suggestion.selected : undefined}>
+                    <text fg={isSelected ? colors.palette.suggestion.selected : colors.palette.suggestion.unselected}>
                       {s.name}
                     </text>
                     {s.description ? (
@@ -223,19 +216,19 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
             <text fg={colors.palette.prompt}>/</text>
             {splitMode ? (
               <box flexDirection="row">
-                <text fg={colors.palette.prompt}>{cmdName}</text>
+                <text fg={colors.palette.hint}>{cmdName}</text>
                 <text> </text>
-                <text fg={colors.palette.prompt}>
+                <text fg={colors.palette.hint}>
                   {inputPart}
-                  <span fg={colors.palette.prompt}>{cursorVisible ? "█" : (ghostText ? "" : " ")}</span>
-                  {ghostText ? <span fg={colors.palette.hint}>{cursorVisible ? ghostText.slice(1) : ghostText}</span> : null}
+                  <span fg={colors.palette.hint}>□</span>
+                  {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
                 </text>
               </box>
             ) : (
-              <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
+              <text fg={isKnownCommand ? colors.palette.hint : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.palette.prompt}>{cursorVisible ? "█" : (ghostText ? "" : " ")}</span>
-                {ghostText ? <span fg={colors.palette.hint}>{cursorVisible ? ghostText.slice(1) : ghostText}</span> : null}
+                <span fg={colors.palette.hint}>□</span>
+                {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
               </text>
             )}
           </box>
