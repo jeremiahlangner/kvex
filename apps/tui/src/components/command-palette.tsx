@@ -177,6 +177,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       height={state.commandOpen ? paletteHeight : 3}
       width="100%"
       flexDirection="column"
+      backgroundColor={colors.pane.background}
       borderStyle="heavy"
       border={["left"]}
       borderColor={colors.palette.prompt}
@@ -219,14 +220,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                 <text> </text>
                 <text fg={colors.palette.hint}>
                   {inputPart}
-                  <span fg={colors.palette.hint}>□</span>
+                  <span fg={colors.palette.hint}>█</span>
                   {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.palette.hint : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.palette.hint}>□</span>
+                <span fg={colors.palette.hint}>█</span>
                 {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
               </text>
             )}
