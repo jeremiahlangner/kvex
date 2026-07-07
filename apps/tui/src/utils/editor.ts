@@ -7,7 +7,7 @@ export async function editInEditor(
   provider: DatabaseProvider,
   table: string,
   key: Record<string, string>,
-  onSave: () => void,
+  onSave: (savedItem: object) => void,
 ): Promise<void> {
   const tmpPath = `/tmp/kvex-edit-${Date.now()}.json`;
   try {
@@ -41,7 +41,7 @@ export async function editInEditor(
     const newStr = JSON.stringify(newItem);
     if (newStr !== oldStr) {
       await provider.putItem(table, key, newItem);
-      onSave();
+      onSave(newItem);
     }
   } finally {
     try { await Bun.write(tmpPath, ""); } catch {}

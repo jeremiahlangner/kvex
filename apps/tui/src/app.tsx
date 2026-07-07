@@ -103,14 +103,15 @@ function AppInner() {
         state.provider,
         state.selectedTable,
         state.previewKey,
-        () => {
-          dispatch({ type: "SET_STATUS", status: "Item saved" });
+        (savedItem) => {
+          dispatch({ type: "SET_PREVIEW_ITEM", item: savedItem, key: state.previewKey });
           cache.put(
             state.activeProviderType,
             state.selectedTable!,
             state.previewKey!,
-            state.previewItem!,
+            savedItem,
           );
+          dispatch({ type: "SET_STATUS", status: "Item saved" });
         },
       );
       return true;
