@@ -51,6 +51,17 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
   const splitMode = isKnownCommand && firstSpaceIdx >= 0;
   const inputPart = splitMode ? state.commandBuffer.slice(firstSpaceIdx + 1) : "";
 
+  const ghostText: string | null = (() => {
+    if (suggestions.length === 0) return null;
+    const first = suggestions[0].name;
+    const input = splitMode ? inputPart : state.commandBuffer;
+    if (!input) return null;
+    if (first.toLowerCase().startsWith(input.toLowerCase())) {
+      return first.slice(input.length);
+    }
+    return null;
+  })();
+
   const executeCommand = () => {
     const parsed = parseCommand(state.commandBuffer);
     if (!parsed) {
@@ -118,14 +129,25 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       return true;
     }
     if (key.name === "tab") {
-      if (suggestions.length > 0 && selectedIndex >= 0) {
-        const suggestion = suggestions[selectedIndex].name;
-        if (splitMode) {
-          dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
-        } else {
-          const parsed = parseCommand(suggestion);
-          const needsArg = parsed && parsed.command !== "quit";
-          dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestion + (needsArg ? " " : "") });
+      if (suggestions.length > 0) {
+        if (selectedIndex >= 0) {
+          const suggestion = suggestions[selectedIndex].name;
+          if (splitMode) {
+            dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
+          } else {
+            const parsed = parseCommand(suggestion);
+            const needsArg = parsed && parsed.command !== "quit";
+            dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestion + (needsArg ? " " : "") });
+          }
+        } else if (ghostText) {
+          const suggestion = suggestions[0].name;
+          if (splitMode) {
+            dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
+          } else {
+            const parsed = parseCommand(suggestion);
+            const needsArg = parsed && parsed.command !== "quit";
+            dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestion + (needsArg ? " " : "") });
+          }
         }
         resetIndex();
       }
@@ -206,12 +228,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                 <text fg={colors.palette.prompt}>
                   {inputPart}
                   <span fg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
+                  {ghostText ? <text fg={colors.palette.hint}>{ghostText}</text> : null}
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
                 {state.commandBuffer}
                 <span fg={colors.palette.prompt}>{cursorVisible ? "█" : " "}</span>
+                {ghostText ? <text fg={colors.palette.hint}>{ghostText}</text> : null}
               </text>
             )}
           </box>
