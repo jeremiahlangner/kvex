@@ -1,7 +1,6 @@
 import { useAppState } from "../state";
 import { getSuggestions, parseCommand } from "../utils/commands";
 import { useKeyboard } from "@opentui/react";
-import { TextAttributes } from "@opentui/core";
 import { useState, useEffect } from "react";
 import { useTheme } from "../themes";
 
@@ -18,6 +17,16 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
   const colors = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [scrollOffset, setScrollOffset] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
+
+  useEffect(() => {
+    if (!state.commandOpen) {
+      setCursorVisible(true);
+      return;
+    }
+    const id = setInterval(() => setCursorVisible((v) => !v), 530);
+    return () => clearInterval(id);
+  }, [state.commandOpen]);
 
   const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
 
@@ -221,14 +230,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                 <text> </text>
                 <text fg={colors.hint}>
                   {inputPart}
-                  <span fg={colors.text} attributes={TextAttributes.BLINK}>█</span>
+                  <span fg={colors.text}>{cursorVisible ? "█" : " "}</span>
                   {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.hint : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.text} attributes={TextAttributes.BLINK}>█</span>
+                <span fg={colors.text}>{cursorVisible ? "█" : " "}</span>
                 {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
               </text>
             )}
