@@ -15,7 +15,7 @@ interface CommandPaletteProps {
 export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSetProvider }: CommandPaletteProps) {
   const { state, dispatch } = useAppState();
   const colors = useTheme();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [cursorVisible, setCursorVisible] = useState(true);
   const [scrollOffset, setScrollOffset] = useState(0);
 
@@ -39,6 +39,7 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       setScrollOffset(0);
       return;
     }
+    if (selectedIndex < 0) { setScrollOffset(0); return; }
     setScrollOffset((prev) => {
       if (selectedIndex < prev) return selectedIndex;
       if (selectedIndex >= prev + suggestionHeight) return selectedIndex - suggestionHeight + 1;
@@ -84,12 +85,12 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
     }
   };
 
-  const resetIndex = () => setSelectedIndex(0);
+  const resetIndex = () => setSelectedIndex(-1);
 
   const closePalette = () => {
     dispatch({ type: "SET_COMMAND_OPEN", open: false });
     dispatch({ type: "SET_COMMAND_BUFFER", buffer: "" });
-    setSelectedIndex(0);
+    setSelectedIndex(-1);
   };
 
   const appendBuffer = (char: string) => {
@@ -106,18 +107,18 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
     }
     if (key.name === "up") {
       if (suggestions.length > 0) {
-        setSelectedIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+        setSelectedIndex((prev) => (prev < 0 ? suggestions.length - 1 : (prev - 1 + suggestions.length) % suggestions.length));
       }
       return true;
     }
     if (key.name === "down") {
       if (suggestions.length > 0) {
-        setSelectedIndex((prev) => (prev + 1) % suggestions.length);
+        setSelectedIndex((prev) => (prev < 0 ? 0 : (prev + 1) % suggestions.length));
       }
       return true;
     }
     if (key.name === "tab") {
-      if (suggestions.length > 0) {
+      if (suggestions.length > 0 && selectedIndex >= 0) {
         const suggestion = suggestions[selectedIndex].name;
         if (splitMode) {
           dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
