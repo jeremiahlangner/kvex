@@ -177,7 +177,6 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       height={state.commandOpen ? paletteHeight : 3}
       width="100%"
       flexDirection="column"
-      backgroundColor={colors.pane.background}
       borderStyle="heavy"
       border={["left"]}
       borderColor={colors.palette.prompt}
