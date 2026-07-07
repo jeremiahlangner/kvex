@@ -228,14 +228,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                 <text fg={colors.palette.prompt}>
                   {inputPart}
                   <span fg={colors.palette.prompt}>{cursorVisible ? "█" : (ghostText ? "" : " ")}</span>
-                  {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
+                  {ghostText ? <span fg={colors.palette.hint}>{cursorVisible ? ghostText.slice(1) : ghostText}</span> : null}
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.palette.prompt : undefined}>
                 {state.commandBuffer}
                 <span fg={colors.palette.prompt}>{cursorVisible ? "█" : (ghostText ? "" : " ")}</span>
-                {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
+                {ghostText ? <span fg={colors.palette.hint}>{cursorVisible ? ghostText.slice(1) : ghostText}</span> : null}
               </text>
             )}
           </box>
