@@ -1,6 +1,7 @@
 import { useAppState } from "../state";
 import { getSuggestions, parseCommand } from "../utils/commands";
 import { useKeyboard } from "@opentui/react";
+import { TextAttributes } from "@opentui/core";
 import { useState, useEffect } from "react";
 import { useTheme } from "../themes";
 
@@ -220,14 +221,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                 <text> </text>
                 <text fg={colors.palette.hint}>
                   {inputPart}
-                  <span fg={colors.palette.hint}>█</span>
+                  <span fg={colors.palette.hint} attributes={TextAttributes.BLINK}>█</span>
                   {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
                 </text>
               </box>
             ) : (
               <text fg={isKnownCommand ? colors.palette.hint : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.palette.hint}>█</span>
+                <span fg={colors.palette.hint} attributes={TextAttributes.BLINK}>█</span>
                 {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
               </text>
             )}
