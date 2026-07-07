@@ -178,14 +178,14 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
       height={state.commandOpen ? paletteHeight : 3}
       width="100%"
       flexDirection="column"
-      backgroundColor={colors.pane.background}
+      backgroundColor={colors.bg}
       borderStyle="heavy"
       border={["left"]}
-      borderColor={colors.palette.prompt}
+      borderColor={colors.prompt}
     >
       {!state.commandOpen ? (
         <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-          <text fg={colors.palette.hint}>'/' for commands or to search</text>
+          <text fg={colors.hint}>'/' for commands or to search</text>
         </box>
       ) : (
         <>
@@ -198,13 +198,13 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
                     key={`${s.name}-${scrollOffset + i}`}
                     height={1}
                     flexDirection="row"
-                    backgroundColor={isSelected ? colors.palette.suggestion.bg : undefined}
+                    backgroundColor={isSelected ? colors.suggestionBg : undefined}
                   >
-                    <text fg={isSelected ? colors.palette.suggestion.selected : colors.palette.suggestion.unselected}>
+                    <text fg={isSelected ? colors.suggestionSelected : colors.suggestionUnselected}>
                       {s.name}
                     </text>
                     {s.description ? (
-                      <text fg={colors.palette.hint}>
+                      <text fg={colors.hint}>
                         {"  "}{s.description}
                       </text>
                     ) : null}
@@ -214,22 +214,22 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
             </box>
           )}
           <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-            <text fg={colors.palette.prompt}>/</text>
+            <text fg={colors.prompt}>/</text>
             {splitMode ? (
               <box flexDirection="row">
-                <text fg={colors.palette.hint}>{cmdName}</text>
+                <text fg={colors.hint}>{cmdName}</text>
                 <text> </text>
-                <text fg={colors.palette.hint}>
+                <text fg={colors.hint}>
                   {inputPart}
-                  <span fg={colors.palette.hint} attributes={TextAttributes.BLINK}>█</span>
-                  {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
+                  <span fg={colors.hint} attributes={TextAttributes.BLINK}>█</span>
+                  {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
                 </text>
               </box>
             ) : (
-              <text fg={isKnownCommand ? colors.palette.hint : undefined}>
+              <text fg={isKnownCommand ? colors.hint : undefined}>
                 {state.commandBuffer}
-                <span fg={colors.palette.hint} attributes={TextAttributes.BLINK}>█</span>
-                {ghostText ? <span fg={colors.palette.hint}>{ghostText}</span> : null}
+                <span fg={colors.hint} attributes={TextAttributes.BLINK}>█</span>
+                {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
               </text>
             )}
           </box>

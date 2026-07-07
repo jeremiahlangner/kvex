@@ -18,17 +18,17 @@ export function ExplorerPane({ focused, title, loading, options, selectedIndex, 
       flexGrow={1}
       flexBasis={0}
       flexDirection="column"
-      backgroundColor={focused ? colors.pane.background : undefined}
+      backgroundColor={focused ? colors.bg : undefined}
       padding={1}
     >
-      <text fg={focused ? colors.pane.title.focused : colors.pane.title.unfocused}>
+      <text fg={focused ? colors.text : colors.hint}>
         {title}
       </text>
       <box height={1} />
       {loading ? (
-        <text fg={colors.pane.loading}>Loading...</text>
+        <text fg={colors.loading}>Loading...</text>
       ) : options.length === 0 ? (
-        <text fg={colors.palette.hint}>{emptyMessage}</text>
+        <text fg={colors.hint}>{emptyMessage}</text>
       ) : (
         <select
           options={options}
@@ -38,12 +38,12 @@ export function ExplorerPane({ focused, title, loading, options, selectedIndex, 
           height={selectHeight}
           itemSpacing={0}
           showDescription={false}
-          textColor={colors.pane.title.unfocused}
-          focusedTextColor={colors.pane.title.unfocused}
+          textColor={colors.hint}
+          focusedTextColor={colors.hint}
           backgroundColor="transparent"
           focusedBackgroundColor="transparent"
-          selectedBackgroundColor={colors.explorer.selectedBg}
-          selectedTextColor={colors.explorer.selectedText}
+          selectedBackgroundColor={colors.selectionBg}
+          selectedTextColor={colors.text}
         />
       )}
     </box>

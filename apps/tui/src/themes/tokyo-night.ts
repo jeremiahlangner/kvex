@@ -1,52 +1,27 @@
 import { type ThemeColors } from "./types";
 
 export const theme: ThemeColors = {
-  pane: {
-    background: "#24283b",
-    title: {
-      focused: "#c0caf5",
-      unfocused: "#565f89",
-    },
-    loading: "#565f89",
-  },
-
-  palette: {
-    prompt: "#bb9af7",
-    suggestion: {
-      selected: "#d0daf5",
-      unselected: "#767fa9",
-      bg: "#283457",
-    },
-    hint: "#565f89",
-  },
-
-  confirm: {
-    background: "#24283b",
-    message: "#c0caf5",
-  },
-
-  explorer: {
-    selectedBg: "#283457",
-    selectedText: "#c0caf5",
-  },
-
-  status: {
-    connected: "#9ece6a",
-    error: "#f7768e",
-    warning: "#e0af68",
-  },
-
-  syntax: {
-    default: "#c0caf5",
-    comment: "#565f89",
-    string: "#9ece6a",
-    number: "#ff9e64",
-    keyword: "#7aa2f7",
-    function: "#bb9af7",
-    property: "#7dcfff",
-    operator: "#a9b1d6",
-    punctuation: "#a9b1d6",
-    tag: "#7aa2f7",
-    type: "#73daca",
-  },
+  bg: "#24283b",
+  text: "#c0caf5",
+  hint: "#565f89",
+  loading: "#565f89",
+  prompt: "#bb9af7",
+  suggestionSelected: "#d0daf5",
+  suggestionUnselected: "#767fa9",
+  suggestionBg: "#283457",
+  selectionBg: "#283457",
+  connected: "#9ece6a",
+  error: "#f7768e",
+  warning: "#e0af68",
+  syntaxDefault: "#c0caf5",
+  syntaxComment: "#565f89",
+  syntaxString: "#9ece6a",
+  syntaxNumber: "#ff9e64",
+  syntaxKeyword: "#7aa2f7",
+  syntaxFunction: "#bb9af7",
+  syntaxProperty: "#7dcfff",
+  syntaxOperator: "#a9b1d6",
+  syntaxPunctuation: "#a9b1d6",
+  syntaxTag: "#7aa2f7",
+  syntaxType: "#73daca",
 };

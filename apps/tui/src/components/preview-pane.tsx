@@ -35,11 +35,11 @@ export function PreviewPane() {
     <box
       height={Math.floor(height / 2)}
       flexDirection="column"
-      backgroundColor={state.focusedPane === 3 ? colors.pane.background : undefined}
+      backgroundColor={state.focusedPane === 3 ? colors.bg : undefined}
       padding={1}
     >
       <box flexDirection="row" justifyContent="center">
-        <text fg={state.focusedPane === 3 ? colors.pane.title.focused : colors.pane.title.unfocused}>
+        <text fg={state.focusedPane === 3 ? colors.text : colors.hint}>
           {keyLabel ? `Preview — ${keyLabel}` : "Preview"}
         </text>
       </box>
@@ -54,12 +54,12 @@ export function PreviewPane() {
             width="100%"
           />
         ) : (
-          <text fg={colors.palette.hint}>Select an item to preview...</text>
+          <text fg={colors.hint}>Select an item to preview...</text>
         )}
       </box>
       {lastUpdatedText && (
         <box flexDirection="row" justifyContent="flex-end">
-          <text fg={colors.palette.hint}>{lastUpdatedText}</text>
+          <text fg={colors.hint}>{lastUpdatedText}</text>
         </box>
       )}
     </box>

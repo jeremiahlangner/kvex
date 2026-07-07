@@ -49,10 +49,10 @@ export function ConfirmDialog() {
 
   if (!state.confirmDialog) return null;
 
-  const yesBg = selected === "yes" ? colors.explorer.selectedBg : undefined;
-  const noBg = selected === "no" ? colors.explorer.selectedBg : undefined;
-  const yesFg = selected === "yes" ? colors.explorer.selectedText : colors.palette.hint;
-  const noFg = selected === "no" ? colors.explorer.selectedText : colors.palette.hint;
+  const yesBg = selected === "yes" ? colors.selectionBg : undefined;
+  const noBg = selected === "no" ? colors.selectionBg : undefined;
+  const yesFg = selected === "yes" ? colors.text : colors.hint;
+  const noFg = selected === "no" ? colors.text : colors.hint;
 
   return (
     <box
@@ -69,13 +69,13 @@ export function ConfirmDialog() {
         top="40%"
         width="50%"
         height={5}
-        backgroundColor={colors.confirm.background}
+        backgroundColor={colors.bg}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
         padding={1}
       >
-        <text fg={colors.confirm.message}>{state.confirmDialog.message}</text>
+        <text fg={colors.text}>{state.confirmDialog.message}</text>
         <box flexDirection="row" marginTop={1} alignItems="center">
           <box paddingLeft={2} paddingRight={2} backgroundColor={yesBg}>
             <text fg={yesFg}>

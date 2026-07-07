@@ -7,8 +7,8 @@ export function StatusBar() {
   const colors = useTheme();
 
   const connColor =
-    state.connectivity === "online" ? colors.status.connected :
-    state.connectivity === "offline" ? colors.status.error : colors.status.warning;
+    state.connectivity === "online" ? colors.connected :
+    state.connectivity === "offline" ? colors.error : colors.warning;
 
   const displayLabel = getConnectionLabel(state.activeProviderType);
   const collectionLabel = getCollectionLabel(state.activeProviderType);

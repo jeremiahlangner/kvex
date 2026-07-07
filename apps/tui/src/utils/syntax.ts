@@ -3,16 +3,16 @@ import type { ThemeColors } from "../themes/types";
 
 export function getSyntaxStyle(colors: ThemeColors): SyntaxStyle {
   return SyntaxStyle.fromStyles({
-    default: { fg: parseColor(colors.syntax.default) },
-    comment: { fg: parseColor(colors.syntax.comment) },
-    string: { fg: parseColor(colors.syntax.string) },
-    number: { fg: parseColor(colors.syntax.number) },
-    keyword: { fg: parseColor(colors.syntax.keyword) },
-    function: { fg: parseColor(colors.syntax.function) },
-    property: { fg: parseColor(colors.syntax.property) },
-    operator: { fg: parseColor(colors.syntax.operator) },
-    punctuation: { fg: parseColor(colors.syntax.punctuation) },
-    tag: { fg: parseColor(colors.syntax.tag) },
-    type: { fg: parseColor(colors.syntax.type) },
+    default: { fg: parseColor(colors.syntaxDefault) },
+    comment: { fg: parseColor(colors.syntaxComment) },
+    string: { fg: parseColor(colors.syntaxString) },
+    number: { fg: parseColor(colors.syntaxNumber) },
+    keyword: { fg: parseColor(colors.syntaxKeyword) },
+    function: { fg: parseColor(colors.syntaxFunction) },
+    property: { fg: parseColor(colors.syntaxProperty) },
+    operator: { fg: parseColor(colors.syntaxOperator) },
+    punctuation: { fg: parseColor(colors.syntaxPunctuation) },
+    tag: { fg: parseColor(colors.syntaxTag) },
+    type: { fg: parseColor(colors.syntaxType) },
   });
 }
