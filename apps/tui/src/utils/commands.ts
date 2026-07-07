@@ -7,7 +7,6 @@ export interface Command {
   name: string;
   aliases: string[];
   description: string;
-  action: (args: string[]) => string | void;
 }
 
 import { getThemeNames } from "../themes";
@@ -25,43 +24,26 @@ export function getBuiltinCommands(): Command[] {
       name: "quit",
       aliases: ["exit"],
       description: "Exit the application",
-      action: () => "quit",
     },
     {
       name: "find",
       aliases: ["search", "f"],
       description: "Search cached objects (find <query>)",
-      action: (args) => {
-        if (!args.length) return "Usage: find <query>";
-        return `search:${args.join(" ")}`;
-      },
     },
     {
       name: "editor",
       aliases: [],
       description: "Set the editor (editor <name>)",
-      action: (args) => {
-        if (!args.length) return "Usage: editor <name> (e.g., editor vim)";
-        return `editor:${args[0]}`;
-      },
     },
     {
       name: "theme",
       aliases: ["t"],
       description: "Set the color theme (theme <name>)",
-      action: (args) => {
-        if (!args.length) return "Usage: theme <name>";
-        return `theme:${args[0]}`;
-      },
     },
     {
       name: "provider",
       aliases: ["p"],
       description: "Switch database provider (provider <name>)",
-      action: (args) => {
-        if (!args.length) return "Usage: provider <name>";
-        return `provider:${args[0]}`;
-      },
     },
   ];
 }

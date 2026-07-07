@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useKeyboard } from "@opentui/react";
 import { useAppState } from "../state";
 import { useTheme } from "../themes";
@@ -8,44 +8,45 @@ export function ConfirmDialog() {
   const colors = useTheme();
   const [selected, setSelected] = useState<"yes" | "no">("no");
 
-  const handleYes = () => {
+  const handleYes = useCallback(() => {
     if (!state.confirmDialog) return;
     state.confirmDialog.onConfirm();
     dispatch({ type: "SET_CONFIRM_DIALOG", dialog: null });
     setSelected("no");
-  };
+  }, [state.confirmDialog, dispatch]);
 
-  const handleNo = () => {
+  const handleNo = useCallback(() => {
     dispatch({ type: "SET_CONFIRM_DIALOG", dialog: null });
     setSelected("no");
-  };
+  }, [dispatch]);
 
-  useKeyboard((key) => {
+  const handleKey = useCallback((key: { name: string }) => {
     if (!state.confirmDialog) return false;
 
-    if (key.name === "y" || key.name === "Y") {
-      handleYes();
-      return true;
-    }
-    if (key.name === "n" || key.name === "N" || key.name === "escape") {
-      handleNo();
-      return true;
-    }
-    if (key.name === "return") {
-      if (selected === "yes") handleYes();
-      else handleNo();
-      return true;
-    }
-    if (key.name === "left" || key.name === "h" || key.name === "b") {
-      setSelected("yes");
-      return true;
-    }
-    if (key.name === "right" || key.name === "l" || key.name === "w" || key.name === "j" || key.name === "k") {
-      setSelected("no");
-      return true;
-    }
-    return false;
-  });
+    const keyMap: Record<string, () => void> = {
+      y: handleYes,
+      Y: handleYes,
+      n: handleNo,
+      N: handleNo,
+      escape: handleNo,
+      return: () => (selected === "yes" ? handleYes() : handleNo()),
+      left: () => setSelected("yes"),
+      h: () => setSelected("yes"),
+      b: () => setSelected("yes"),
+      right: () => setSelected("no"),
+      l: () => setSelected("no"),
+      w: () => setSelected("no"),
+      j: () => setSelected("no"),
+      k: () => setSelected("no"),
+    };
+
+    const action = keyMap[key.name];
+    if (!action) return false;
+    action();
+    return true;
+  }, [state.confirmDialog, selected, handleYes, handleNo]);
+
+  useKeyboard(handleKey);
 
   if (!state.confirmDialog) return null;
 

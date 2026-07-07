@@ -5,7 +5,6 @@ import {
   type ProviderType,
   type KvexConfig,
   type ConfirmDialog,
-  type ConnectionStatus,
   type ConnectivityState,
   DEFAULT_CONFIG,
 } from "./providers/types";
@@ -14,7 +13,6 @@ import { createProvider } from "./providers/factory";
 export interface AppState {
   config: KvexConfig;
   provider: DatabaseProvider;
-  connectionStatus: ConnectionStatus;
   activeProviderType: ProviderType;
   tables: { name: string; keySchema: KeySchema }[];
   selectedTable: string | null;
@@ -27,7 +25,6 @@ export interface AppState {
   previewKey: Record<string, string> | null;
   commandOpen: boolean;
   commandBuffer: string;
-  commandSuggestions: string[];
   confirmDialog: ConfirmDialog | null;
   focusedPane: number;
   connectivity: ConnectivityState;
@@ -42,7 +39,6 @@ export interface AppState {
 export type AppAction =
   | { type: "SET_CONFIG"; config: KvexConfig }
   | { type: "SET_PROVIDER"; provider: DatabaseProvider }
-  | { type: "SET_CONNECTION_STATUS"; status: ConnectionStatus }
   | { type: "SET_ACTIVE_PROVIDER_TYPE"; providerType: ProviderType }
   | { type: "SET_TABLES"; tables: { name: string; keySchema: KeySchema }[] }
   | { type: "SET_SELECTED_TABLE"; table: string | null }
@@ -54,7 +50,6 @@ export type AppAction =
   | { type: "SET_PREVIEW_ITEM"; item: object | null; key: Record<string, string> | null }
   | { type: "SET_COMMAND_OPEN"; open: boolean }
   | { type: "SET_COMMAND_BUFFER"; buffer: string }
-  | { type: "SET_COMMAND_SUGGESTIONS"; suggestions: string[] }
   | { type: "SET_CONFIRM_DIALOG"; dialog: ConfirmDialog | null }
   | { type: "SET_FOCUSED_PANE"; pane: number }
   | { type: "SET_CONNECTIVITY"; connectivity: ConnectivityState }
@@ -70,30 +65,28 @@ export function makeInitialState(config: KvexConfig = DEFAULT_CONFIG): AppState 
   return {
     config,
     provider: createProvider(config.activeProvider),
-    connectionStatus: "disconnected",
     connectivity: config.activeProvider === "local" ? "local" : "offline",
     activeProviderType: config.activeProvider,
-  tables: [],
-  selectedTable: null,
-  tableSchema: null,
-  primaryKeyOptions: [],
-  primaryKeyValue: null,
-  sortKeyOptions: [],
-  sortKeyValue: null,
-  previewItem: null,
-  previewKey: null,
-  commandOpen: false,
-  commandBuffer: "",
-  commandSuggestions: [],
-  confirmDialog: null,
-  focusedPane: 0,
-  tablesLoading: false,
-  primaryKeyLoading: false,
-  sortKeyLoading: false,
-  previewLoading: false,
-  errorMessage: null,
-  statusMessage: "Ready",
-};
+    tables: [],
+    selectedTable: null,
+    tableSchema: null,
+    primaryKeyOptions: [],
+    primaryKeyValue: null,
+    sortKeyOptions: [],
+    sortKeyValue: null,
+    previewItem: null,
+    previewKey: null,
+    commandOpen: false,
+    commandBuffer: "",
+    confirmDialog: null,
+    focusedPane: 0,
+    tablesLoading: false,
+    primaryKeyLoading: false,
+    sortKeyLoading: false,
+    previewLoading: false,
+    errorMessage: null,
+    statusMessage: "Ready",
+  };
 }
 
 export function appReducer(state: AppState, action: AppAction): AppState {
@@ -102,8 +95,6 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, config: action.config };
     case "SET_PROVIDER":
       return { ...state, provider: action.provider };
-    case "SET_CONNECTION_STATUS":
-      return { ...state, connectionStatus: action.status };
     case "SET_ACTIVE_PROVIDER_TYPE":
       return { ...state, activeProviderType: action.providerType };
     case "SET_TABLES":
@@ -126,8 +117,6 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, commandOpen: action.open };
     case "SET_COMMAND_BUFFER":
       return { ...state, commandBuffer: action.buffer };
-    case "SET_COMMAND_SUGGESTIONS":
-      return { ...state, commandSuggestions: action.suggestions };
     case "SET_CONFIRM_DIALOG":
       return { ...state, confirmDialog: action.dialog };
     case "SET_FOCUSED_PANE":

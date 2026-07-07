@@ -1,18 +1,24 @@
 import { useTheme } from "../themes";
 
+interface ExplorerOption {
+  name: string;
+  description?: string;
+}
+
 interface ExplorerPaneProps {
   focused: boolean;
   title: string;
   loading: boolean;
-  options: { name: string; description: string }[];
+  options: ExplorerOption[];
   selectedIndex: number;
-  onChange: (index: number, option: any) => void;
+  onChange: (index: number, option: ExplorerOption | null) => void;
   selectHeight?: number;
   emptyMessage?: string;
 }
 
 export function ExplorerPane({ focused, title, loading, options, selectedIndex, onChange, selectHeight = 10, emptyMessage = "No items" }: ExplorerPaneProps) {
   const colors = useTheme();
+  const selectOptions = options.map((o) => ({ name: o.name, description: o.description ?? "" }));
   return (
     <box
       flexGrow={1}
@@ -31,7 +37,7 @@ export function ExplorerPane({ focused, title, loading, options, selectedIndex, 
         <text fg={colors.hint}>{emptyMessage}</text>
       ) : (
         <select
-          options={options}
+          options={selectOptions}
           selectedIndex={selectedIndex >= 0 ? selectedIndex : 0}
           onChange={onChange}
           focused={focused}

@@ -6,8 +6,6 @@ import { cache } from "./cache";
 
 async function main() {
   const config = await readConfig();
-  console.log("Config loaded:", config);
-
   await cache.init();
 
   const renderer = await createCliRenderer({

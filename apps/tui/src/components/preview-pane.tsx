@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useAppState } from "../state";
 import { getSyntaxStyle } from "../utils/syntax";
 import { createOnChunks } from "../utils/highlight";
@@ -9,18 +9,6 @@ export function PreviewPane() {
   const { state } = useAppState();
   const colors = useTheme();
   const { height } = useTerminalDimensions();
-
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-
-  useEffect(() => {
-    if (state.previewItem) {
-      setLastUpdated(new Date());
-    }
-  }, [state.previewItem]);
-
-  const lastUpdatedText = lastUpdated
-    ? `Last updated ${lastUpdated.toLocaleDateString()} ${lastUpdated.toTimeString().slice(0, 8)}`
-    : null;
 
   const syntaxStyle = useMemo(() => getSyntaxStyle(colors), [colors]);
   const onChunks = useMemo(() => createOnChunks(colors), [colors]);
@@ -57,11 +45,6 @@ export function PreviewPane() {
           <text fg={colors.hint}>Select an item to preview...</text>
         )}
       </box>
-      {lastUpdatedText && (
-        <box flexDirection="row" justifyContent="flex-end">
-          <text fg={colors.hint}>{lastUpdatedText}</text>
-        </box>
-      )}
     </box>
   );
 }

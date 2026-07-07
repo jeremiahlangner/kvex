@@ -12,16 +12,19 @@ export function StatusBar() {
 
   const displayLabel = getConnectionLabel(state.activeProviderType);
   const collectionLabel = getCollectionLabel(state.activeProviderType);
+  const message = state.errorMessage ?? state.statusMessage;
+  const messageColor = state.errorMessage ? colors.error : colors.text;
 
   return (
     <box
       height={1}
       width="100%"
       flexDirection="row"
-      justifyContent="flex-end"
       paddingLeft={1}
       paddingRight={1}
     >
+      <text fg={messageColor}>{message}</text>
+      <box flexGrow={1} />
       <text fg={connColor}>
         {displayLabel} / {collectionLabel}  •  {state.connectivity}
       </text>

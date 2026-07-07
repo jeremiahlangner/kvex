@@ -1,8 +1,8 @@
 import { useAppState } from "../state";
-import { getSuggestions, parseCommand } from "../utils/commands";
-import { useKeyboard } from "@opentui/react";
-import { useState, useEffect } from "react";
 import { useTheme } from "../themes";
+import { useCommandPalette } from "./command-palette/use-command-palette";
+import { SuggestionItem } from "./command-palette/suggestion-item";
+import { CommandInput } from "./command-palette/command-input";
 
 interface CommandPaletteProps {
   onQuit: () => void;
@@ -12,179 +12,23 @@ interface CommandPaletteProps {
   onSetProvider: (name: string) => void;
 }
 
-export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSetProvider }: CommandPaletteProps) {
-  const { state, dispatch } = useAppState();
+export function CommandPalette(props: CommandPaletteProps) {
+  const { state } = useAppState();
   const colors = useTheme();
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const [cursorVisible, setCursorVisible] = useState(true);
-
-  useEffect(() => {
-    if (!state.commandOpen) {
-      setCursorVisible(true);
-      return;
-    }
-    const id = setInterval(() => setCursorVisible((v) => !v), 530);
-    return () => clearInterval(id);
-  }, [state.commandOpen]);
-
-  const suggestions = state.commandOpen ? getSuggestions(state.commandBuffer) : [];
-
-  const firstSpaceIdx = state.commandBuffer.indexOf(" ");
-  const cmdName = firstSpaceIdx >= 0 ? state.commandBuffer.slice(0, firstSpaceIdx) : state.commandBuffer;
-
-  const isKnownCommand = cmdName && parseCommand(cmdName) !== null;
-
-  const suggestionHeight = suggestions.length > 0 ? Math.min(7, suggestions.length) : 0;
-
-  useEffect(() => {
-    if (suggestions.length <= suggestionHeight) {
-      setScrollOffset(0);
-      return;
-    }
-    if (selectedIndex < 0) { setScrollOffset(0); return; }
-    setScrollOffset((prev) => {
-      if (selectedIndex < prev) return selectedIndex;
-      if (selectedIndex >= prev + suggestionHeight) return selectedIndex - suggestionHeight + 1;
-      return prev;
-    });
-  }, [selectedIndex, suggestionHeight, suggestions.length]);
-  const paletteHeight = suggestionHeight + 3;
-
-  const splitMode = isKnownCommand && firstSpaceIdx >= 0;
-  const inputPart = splitMode ? state.commandBuffer.slice(firstSpaceIdx + 1) : "";
-
-  const ghostText: string | null = (() => {
-    if (suggestions.length === 0) return null;
-    const first = suggestions[0].name;
-    const input = splitMode ? inputPart : state.commandBuffer;
-    if (!input) return null;
-    if (first.toLowerCase().startsWith(input.toLowerCase())) {
-      return first.slice(input.length);
-    }
-    return null;
-  })();
-
-  const executeCommand = () => {
-    const parsed = parseCommand(state.commandBuffer);
-    if (!parsed) {
-      closePalette();
-      onSearch(state.commandBuffer);
-      return;
-    }
-    switch (parsed.command) {
-      case "quit":
-        closePalette();
-        onQuit();
-        break;
-      case "find":
-        closePalette();
-        onSearch(parsed.args.join(" "));
-        break;
-      case "editor":
-        if (parsed.args[0]) onSetEditor(parsed.args[0]);
-        closePalette();
-        break;
-      case "theme":
-        if (parsed.args[0]) onSetTheme(parsed.args[0]);
-        closePalette();
-        break;
-      case "provider":
-        if (parsed.args[0]) onSetProvider(parsed.args[0]);
-        closePalette();
-        break;
-      default:
-        dispatch({ type: "SET_STATUS", status: `Unknown: ${parsed.command}` });
-        closePalette();
-    }
-  };
-
-  const resetIndex = () => setSelectedIndex(-1);
-
-  const closePalette = () => {
-    dispatch({ type: "SET_COMMAND_OPEN", open: false });
-    dispatch({ type: "SET_COMMAND_BUFFER", buffer: "" });
-    setSelectedIndex(-1);
-  };
-
-  const appendBuffer = (char: string) => {
-    dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer + char });
-    resetIndex();
-  };
-
-  useKeyboard((key) => {
-    if (!state.commandOpen) return false;
-
-    if (key.name === "escape") {
-      closePalette();
-      return true;
-    }
-    if (key.name === "up") {
-      if (suggestions.length > 0) {
-        setSelectedIndex((prev) => (prev < 0 ? suggestions.length - 1 : (prev - 1 + suggestions.length) % suggestions.length));
-      }
-      return true;
-    }
-    if (key.name === "down") {
-      if (suggestions.length > 0) {
-        setSelectedIndex((prev) => (prev < 0 ? 0 : (prev + 1) % suggestions.length));
-      }
-      return true;
-    }
-    if (key.name === "tab") {
-      if (suggestions.length > 0) {
-        if (selectedIndex >= 0) {
-          const suggestion = suggestions[selectedIndex].name;
-          if (splitMode) {
-            dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
-          } else {
-            const parsed = parseCommand(suggestion);
-            const needsArg = parsed && parsed.command !== "quit";
-            dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestion + (needsArg ? " " : "") });
-          }
-        } else if (ghostText) {
-          const suggestion = suggestions[0].name;
-          if (splitMode) {
-            dispatch({ type: "SET_COMMAND_BUFFER", buffer: cmdName + " " + suggestion });
-          } else {
-            const parsed = parseCommand(suggestion);
-            const needsArg = parsed && parsed.command !== "quit";
-            dispatch({ type: "SET_COMMAND_BUFFER", buffer: suggestion + (needsArg ? " " : "") });
-          }
-        }
-        resetIndex();
-      }
-      return true;
-    }
-    if (key.name === "backspace") {
-      dispatch({ type: "SET_COMMAND_BUFFER", buffer: state.commandBuffer.slice(0, -1) });
-      resetIndex();
-      return true;
-    }
-    if (key.ctrl && key.name === "u") {
-      dispatch({ type: "SET_COMMAND_BUFFER", buffer: "" });
-      resetIndex();
-      return true;
-    }
-    if (key.name === "return") {
-      executeCommand();
-      return true;
-    }
-    if (key.name === "space") {
-      appendBuffer(" ");
-      return true;
-    }
-    if (key.name.length === 1 && !key.ctrl && !key.meta && !key.option) {
-      let char = key.shift ? key.name.toUpperCase() : key.name;
-      appendBuffer(char);
-      return true;
-    }
-    return false;
-  });
+  const {
+    visibleSuggestions,
+    selectedIndex,
+    scrollOffset,
+    suggestionHeight,
+    ghostText,
+    splitMode,
+    cmdName,
+    inputPart,
+  } = useCommandPalette(props);
 
   return (
     <box
-      height={state.commandOpen ? paletteHeight : 3}
+      height={state.commandOpen ? suggestionHeight + 3 : 3}
       width="100%"
       flexDirection="column"
       backgroundColor={colors.bg}
@@ -198,50 +42,25 @@ export function CommandPalette({ onQuit, onSearch, onSetEditor, onSetTheme, onSe
         </box>
       ) : (
         <>
-          {suggestions.length > 0 && (
+          {visibleSuggestions.length > 0 && (
             <box flexDirection="column" height={suggestionHeight}>
-              {suggestions.slice(scrollOffset, scrollOffset + suggestionHeight).map((s, i) => {
-                const isSelected = scrollOffset + i === selectedIndex;
-                return (
-                  <box
-                    key={`${s.name}-${scrollOffset + i}`}
-                    height={1}
-                    flexDirection="row"
-                    backgroundColor={isSelected ? colors.suggestionBg : undefined}
-                  >
-                    <text fg={isSelected ? colors.suggestionSelected : colors.suggestionUnselected}>
-                      {s.name}
-                    </text>
-                    {s.description ? (
-                      <text fg={colors.hint}>
-                        {"  "}{s.description}
-                      </text>
-                    ) : null}
-                  </box>
-                );
-              })}
+              {visibleSuggestions.map((s, i) => (
+                <SuggestionItem
+                  key={`${s.name}-${scrollOffset + i}`}
+                  name={s.name}
+                  description={s.description}
+                  selected={scrollOffset + i === selectedIndex}
+                />
+              ))}
             </box>
           )}
-          <box height={3} flexDirection="row" alignItems="center" paddingLeft={1}>
-            <text fg={colors.prompt}>/</text>
-            {splitMode ? (
-              <box flexDirection="row">
-                <text fg={colors.hint}>{cmdName}</text>
-                <text> </text>
-                <text fg={colors.hint}>
-                  {inputPart}
-                  <span fg={colors.text}>{cursorVisible ? "█" : " "}</span>
-                  {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
-                </text>
-              </box>
-            ) : (
-              <text fg={isKnownCommand ? colors.hint : undefined}>
-                {state.commandBuffer}
-                <span fg={colors.text}>{cursorVisible ? "█" : " "}</span>
-                {ghostText ? <span fg={colors.hint}>{ghostText}</span> : null}
-              </text>
-            )}
-          </box>
+          <CommandInput
+            buffer={state.commandBuffer}
+            ghostText={ghostText}
+            splitMode={splitMode}
+            cmdName={cmdName}
+            inputPart={inputPart}
+          />
         </>
       )}
     </box>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state";
 import { getCollectionLabel } from "../providers/types";
-import { createProvider } from "../providers/factory";
+import { initializeProvider } from "../utils/provider-init";
 import { ExplorerPane } from "./explorer-pane";
 
 export function DatabaseSelect() {
@@ -20,24 +20,13 @@ export function DatabaseSelect() {
   }, [state.selectedTable]);
 
   const initProvider = async () => {
-    dispatch({ type: "SET_CONNECTION_STATUS", status: "connecting" });
-    dispatch({ type: "SET_TABLES_LOADING", loading: true });
     try {
-      const provider = createProvider(state.activeProviderType);
-      await provider.connect();
-      dispatch({ type: "SET_PROVIDER", provider });
-      dispatch({ type: "SET_CONNECTION_STATUS", status: "connected" });
-      dispatch({ type: "SET_STATUS", status: "Connected to provider" });
-      const tables = await provider.listTables();
-      dispatch({ type: "SET_TABLES", tables });
-      dispatch({ type: "SET_TABLES_LOADING", loading: false });
+      const { tables } = await initializeProvider(state.activeProviderType, dispatch);
       if (tables.length > 0) {
         dispatch({ type: "SET_SELECTED_TABLE", table: tables[0].name });
       }
-    } catch (err) {
-      dispatch({ type: "SET_CONNECTION_STATUS", status: "error" });
-      dispatch({ type: "SET_ERROR", error: String(err) });
-      dispatch({ type: "SET_TABLES_LOADING", loading: false });
+    } catch {
+      // errors already dispatched by initializeProvider
     }
   };
 
@@ -59,14 +48,14 @@ export function DatabaseSelect() {
     }
   };
 
-  const handleTableChange = (index: number, option: any) => {
+  const handleTableChange = (index: number, option: { name: string } | null) => {
     if (!option || !option.name) return;
     dispatch({ type: "SET_SELECTED_TABLE", table: option.name });
     dispatch({ type: "SET_STATUS", status: `Table: ${option.name}` });
   };
 
   const label = getCollectionLabel(state.activeProviderType);
-  const tableOptions = state.tables.map((t) => ({ name: t.name, description: "" }));
+  const tableOptions = state.tables.map((t) => ({ name: t.name }));
   const selectedTableIndex = state.tables.findIndex((t) => t.name === state.selectedTable);
 
   return (
